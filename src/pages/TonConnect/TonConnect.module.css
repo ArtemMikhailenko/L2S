@@ -1,36 +1,288 @@
-.container {
+/* TonConnect.module.css */
+.pageContainer {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #d9d9d9;
-    color: #801a3d;
+    background-image: radial-gradient(#801a3d 0.5px, #d9d9d9 0.5px);
+    background-size: 20px 20px;
     padding: 20px;
-    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Quiz elements in background */
+  .quizElements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  
+  .quizElement {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.2;
+    z-index: 0;
+  }
+  
+  .quizElement:nth-child(1) {
+    width: 200px;
+    height: 200px;
+    background-color: #801a3d;
+    top: 10%;
+    left: 10%;
+    animation: float 15s infinite ease-in-out;
+  }
+  
+  .quizElement:nth-child(2) {
+    width: 150px;
+    height: 150px;
+    background-color: #d4af37;
+    bottom: 20%;
+    right: 15%;
+    animation: float 18s infinite ease-in-out reverse;
+  }
+  
+  .quizElement:nth-child(3) {
+    width: 120px;
+    height: 120px;
+    background-color: #801a3d;
+    bottom: 15%;
+    left: 20%;
+    animation: float 12s infinite ease-in-out 2s;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(5deg);
+    }
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+  }
+  
+  .container {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    overflow: hidden;
+    border-radius: 24px;
+    background-color: white;
+    box-shadow: 0 15px 35px rgba(128, 26, 61, 0.2);
+    border: 2px solid #801a3d;
+    z-index: 1;
+  }
+  
+  .glowEffect {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(128, 26, 61, 0.4) 0%, rgba(128, 26, 61, 0) 70%);
+    top: -100px;
+    right: -100px;
+    z-index: 0;
+    animation: pulse 4s infinite alternate;
+  }
+  
+  @keyframes pulse {
+    0% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0.8;
+      transform: scale(1.2);
+    }
+  }
+  
+  .quizGraphic {
+    position: absolute;
+    font-size: 100px;
+    font-weight: bold;
+    color: rgba(128, 26, 61, 0.1);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    user-select: none;
+  }
+  
+  .content {
+    padding: 36px;
     text-align: center;
-    max-width: 500px;
-    margin: 40px auto; /* центрируем блок и отступ сверху */
-    font-family: sans-serif;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+  }
+  
+  .logoArea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  
+  .logoIcon {
+    font-size: 32px;
+    margin-right: 12px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
   }
   
   .title {
-    margin-bottom: 1rem;
+    color: #801a3d;
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.5px;
+    text-shadow: 2px 2px 0px rgba(212, 175, 55, 0.3);
   }
   
-  .connectButton {
-    /* 
-      Кнопка из @tonconnect/ui-react может иметь собственные стили.
-      Мы можем переопределить их через !important или добавлять свои классы.
-    */
-    background-color: #801a3d !important;
-    color: #d4af37 !important;
-    border: none !important;
-    padding: 12px 24px !important;
-    border-radius: 4px !important;
-    cursor: pointer !important;
-    font-weight: bold !important;
-    transition: background-color 0.3s ease !important;
-    text-decoration: none !important;
+  .subtitle {
+    color: #4a4a4a;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 24px 0;
+    font-family: 'Montserrat', sans-serif;
   }
   
-  .connectButton:hover {
-    background-color: #9c254b !important;
+  .infoBox {
+    background-color: rgba(128, 26, 61, 0.05);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+    border: 1px dashed rgba(128, 26, 61, 0.3);
   }
   
+  .description {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .walletArea {
+    margin-bottom: 28px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .walletNote {
+    font-size: 12px;
+    color: #888;
+    margin-top: 8px;
+  }
+  
+
+  
+  .features {
+    display: flex;
+    justify-content: space-between;
+    margin: 24px 0;
+    background-color: rgba(217, 217, 217, 0.4);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  
+  .featureItem {
+    flex: 1;
+    padding: 8px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .featureItem:not(:last-child):after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background-color: rgba(128, 26, 61, 0.2);
+  }
+  
+  .featureIcon {
+    font-size: 28px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+  }
+  
+  .featureText {
+    color: #555;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .quizSample {
+    margin-top: 24px;
+    padding: 16px;
+    background-color: #801a3d;
+    border-radius: 12px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .quizSample:before {
+    content: "?";
+    position: absolute;
+    font-size: 80px;
+    opacity: 0.1;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #d4af37;
+    font-weight: bold;
+  }
+  
+  .sampleQuestion {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: left;
+    color: #d4af37;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* For mobile responsiveness */
+  @media (max-width: 480px) {
+    .content {
+      padding: 24px 16px;
+    }
+    
+    .title {
+      font-size: 32px;
+    }
+    
+    .subtitle {
+      font-size: 20px;
+    }
+    
+    .connectButton {
+      padding: 12px 24px !important;
+    }
+    
+    .features {
+      padding: 12px 8px;
+    }
+    
+    .featureIcon {
+      font-size: 24px;
+    }
+    
+    .featureText {
+      font-size: 12px;
+    }
+  }
