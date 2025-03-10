@@ -1,4 +1,3 @@
-// src/App.tsx
 import { useEffect, useState } from 'react';
 import WebApp from '@twa-dev/sdk';
 import './App.css';
@@ -7,38 +6,32 @@ function App() {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    // Инициализация Telegram WebApp
-    WebApp.ready();
-    
-    // Установка темы
-    document.body.style.backgroundColor = WebApp.backgroundColor;
-    
-    // Получение информации о пользователе
-    if (WebApp.initDataUnsafe?.user) {
-      setUser(WebApp.initDataUnsafe.user);
-    }
-    
-    // Показать приложение на весь экран
-    WebApp.expand();
-    
-    // Установка заголовка в Main Button (если нужно)
-    WebApp.MainButton.setText('Подтвердить');
-    
-    // Обработчик нажатия на Main Button
-    WebApp.MainButton.onClick(() => {
-      // Здесь ваша логика при нажатии кнопки
+    // Функция-обработчик, которую мы хотим передать в onClick
+    const handleMainButtonClick = () => {
       WebApp.showAlert('Действие выполнено!');
-      
-      // Пример отправки данных в Telegram бот
       WebApp.sendData(JSON.stringify({
         action: 'submit',
         data: { /* ваши данные */ }
       }));
-    });
-    
+    };
+
+    // Инициализация Telegram WebApp
+    WebApp.ready();
+    document.body.style.backgroundColor = WebApp.backgroundColor;
+
+    if (WebApp.initDataUnsafe?.user) {
+      setUser(WebApp.initDataUnsafe.user);
+    }
+
+    WebApp.expand();
+    WebApp.MainButton.setText('Подтвердить');
+
+    // Передаём колбэк
+    WebApp.MainButton.onClick(handleMainButtonClick);
+
     return () => {
-      // Очистка обработчиков
-      WebApp.MainButton.offClick();
+      // Снимаем тот же колбэк
+      WebApp.MainButton.offClick(handleMainButtonClick);
     };
   }, []);
 
@@ -59,7 +52,6 @@ function App() {
         )}
         
         <div className="content">
-          {/* Контент вашего приложения */}
           <button 
             onClick={() => WebApp.MainButton.show()}
             className="app-button"
