@@ -1,67 +1,36 @@
-import { useEffect, useState } from 'react';
-import WebApp from '@twa-dev/sdk';
-import './App.css';
+// src/App.tsx
+import { Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout'
+import TonConnect from './pages/TonConnect/TonConnect'
+import Quiz from './pages/Quiz/Quiz'
+import Profile from './pages/Profile/Profile'
+import './App.css'
 
 function App() {
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    // Функция-обработчик, которую мы хотим передать в onClick
-    const handleMainButtonClick = () => {
-      WebApp.showAlert('Действие выполнено!');
-      WebApp.sendData(JSON.stringify({
-        action: 'submit',
-        data: { /* ваши данные */ }
-      }));
-    };
-
-    // Инициализация Telegram WebApp
-    WebApp.ready();
-    document.body.style.backgroundColor = WebApp.backgroundColor;
-
-    if (WebApp.initDataUnsafe?.user) {
-      setUser(WebApp.initDataUnsafe.user);
-    }
-
-    WebApp.expand();
-    WebApp.MainButton.setText('Подтвердить');
-
-    // Передаём колбэк
-    WebApp.MainButton.onClick(handleMainButtonClick);
-
-    return () => {
-      // Снимаем тот же колбэк
-      WebApp.MainButton.offClick(handleMainButtonClick);
-    };
-  }, []);
-
   return (
-    <div className="container">
-      <header>
-        <h1>Telegram Web App</h1>
-      </header>
-      
-      <main>
-        {user ? (
-          <div className="user-info">
-            <p>Привет, {user.first_name}!</p>
-            <p>ID: {user.id}</p>
-          </div>
-        ) : (
-          <p>Загрузка информации о пользователе...</p>
-        )}
+    <Routes>
+      {/* 
+        Общий Layout для всех страниц
+        Можно обернуть <Routes> в <Layout>, либо использовать Nested Routes 
+      */}
+      <Route path="/" element={<Layout />}>
+        {/* Главная страница (TON Connect) */}
+        <Route index element={<TonConnect />} />
         
-        <div className="content">
-          <button 
-            onClick={() => WebApp.MainButton.show()}
-            className="app-button"
-          >
-            Показать основную кнопку
-          </button>
-        </div>
-      </main>
-    </div>
-  );
+        {/* Квиз */}
+        <Route path="quiz" element={<Quiz />} />
+        
+        {/* Профиль */}
+        <Route path="profile" element={<Profile />} />
+        
+        {/* 
+          Маршрут "звездочка" для несуществующих страниц
+          можно добавить, чтобы показывать 404 
+        */}
+        <Route path="*" element={<div>Страница не найдена</div>} />
+      </Route>
+    </Routes>
+  )
 }
 
-export default App;
+export default App

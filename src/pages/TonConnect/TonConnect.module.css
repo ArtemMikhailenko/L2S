@@ -1,0 +1,36 @@
+.container {
+    background-color: #d9d9d9;
+    color: #801a3d;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 500px;
+    margin: 40px auto; /* центрируем блок и отступ сверху */
+    font-family: sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    margin-bottom: 1rem;
+  }
+  
+  .connectButton {
+    /* 
+      Кнопка из @tonconnect/ui-react может иметь собственные стили.
+      Мы можем переопределить их через !important или добавлять свои классы.
+    */
+    background-color: #801a3d !important;
+    color: #d4af37 !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    transition: background-color 0.3s ease !important;
+    text-decoration: none !important;
+  }
+  
+  .connectButton:hover {
+    background-color: #9c254b !important;
+  }
+  
