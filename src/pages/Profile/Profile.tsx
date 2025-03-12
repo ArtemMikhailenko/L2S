@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+"use client";
+
+import { useState, useEffect } from "react";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 import WebApp from "@twa-dev/sdk";
 import styles from "./Profile.module.css";
-import { Trophy, Users } from 'lucide-react';
+import { Trophy, Users } from "lucide-react";
 
 // Import components
 import ProfileHeader from '../../components/Profile/ProfileHeader/ProfileHeader';
 import LevelProgressBar from '../../components/Profile/LevelProgressBar/LevelProgressBar';
 import TabNavigation from '../../components/Profile/TabNavigation/TabNavigation';
-import StatsTab from '../../components/Profile/StatsTab/StatisticsTab';
+// import StatsTab from '../../components/Profile/StatsTab/StatisticsTab';
 import RankingTab from '../../components/Profile/RankingTab/RankingTab';
 import ReferralsTab from '../../components/Profile/ReferralsTab/ReferralsTab';
 import { Activity } from '../../components/Profile/ActivityItem/ActivityItem';
@@ -26,45 +28,40 @@ interface UserData {
   level: number;
   joinedDate: string;
   profileImage?: string;
+  referralCode: string;
+  referralsCount:any;
+  referralPoints:any;
 }
 
 function Profile() {
   const [activeTab, setActiveTab] = useState<'stats' | 'ranking' | 'referrals'>('stats');
+    //@ts-ignore
+
   const [tonConnectUI] = useTonConnectUI();
-  const telegramId = WebApp.initDataUnsafe?.user?.id 
-//@ts-ignore
-const [userData, setUserData] = useState<UserData>({
-    firstName: WebApp.initDataUnsafe?.user?.first_name || 'Иван',
-    lastName: WebApp.initDataUnsafe?.user?.last_name || 'Иванов',
-    walletAddress: tonConnectUI.wallet?.account.address || '0x123...abc',
-    rating: 4.5,
-    totalQuizzes: 32,
-    correctAnswers: 187,
-    totalPoints: 2450,
-    level: 7,
-    joinedDate: '10 Jan 2025'
-  });
-//@ts-ignore
+  
+  const [userData, setUserData] = useState<UserData | undefined>(undefined);
+
+  //@ts-ignore
   const [weeklyRankings, setWeeklyRankings] = useState<Rank[]>([
     { position: 1, name: 'Alex T.', points: 870, isCurrentUser: false },
     { position: 2, name: 'Maria S.', points: 810, isCurrentUser: false },
     { position: 3, name: 'Sergey K.', points: 790, isCurrentUser: false },
-    { position: 4, name: `${userData.firstName} ${userData.lastName.charAt(0)}.`, points: 710, isCurrentUser: true },
+    { position: 4, name: `${ WebApp.initDataUnsafe?.user?.first_name} ${WebApp.initDataUnsafe?.user?.last_name}.`, points: 710, isCurrentUser: true },
     { position: 5, name: 'Pavel D.', points: 650, isCurrentUser: false },
     { position: 6, name: 'Nina L.', points: 620, isCurrentUser: false },
     { position: 7, name: 'Boris M.', points: 590, isCurrentUser: false },
   ]);
-//@ts-ignore
 
   const [referralInfo, setReferralInfo] = useState<ReferralInfo>({
-    code: 'TONQUIZ123',
-    referralsCount: 7,
-    pointsEarned: 350,
-    nextReward: 100,
-    nextRewardThreshold: 10
+    code: "", // Пока пусто, обновим после получения данных
+    referralsCount: 0,
+    pointsEarned: 0,
+    // nextReward: 100,
+    // nextRewardThreshold: 10,
   });
 
   // Mock activity data
+  //@ts-ignore
   const activities: Activity[] = [
     {
       icon: Trophy,
@@ -105,9 +102,10 @@ const [userData, setUserData] = useState<UserData>({
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await fetch(`http://localhost:3001/api/user/${telegramId}`);
-        const data = await response.json();
+        const response = await fetch(`http://localhost:3001/api/user/telegram/12345`);
+        const data: UserData = await response.json();
         setUserData(data);
+        setReferralInfo(prev => ({ ...prev, code: data.referralCode, referralsCount: data.referralsCount, pointsEarned: data.referralPoints }));
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -115,22 +113,27 @@ const [userData, setUserData] = useState<UserData>({
     fetchUserData();
   }, []);
 
+  // Пока данные не получены, показываем загрузку
+  if (!userData) {
+    return (
+      <div className={styles.profileContainer}>
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.profileContainer}>
       {/* Header with user info */}
       <ProfileHeader 
-        // firstName={userData.firstName}
-        // lastName={userData.lastName}
-        // walletAddress={userData.walletAddress}
-        // level={userData.level}
-        // joinedDate={userData.joinedDate}
-        // profileImage={userData.profileImage}
+        // Если компонента ProfileHeader теперь берет данные из WebApp и TON Connect, 
+        // можно оставить пустыми или убрать props
       />
 
       {/* Level progress bar */}
       <LevelProgressBar 
         currentLevel={userData.level}
-        totalPoints={userData.totalPoints}
+        totalPoints={userData.referralPoints}
       />
 
       {/* Navigation tabs */}
@@ -141,17 +144,15 @@ const [userData, setUserData] = useState<UserData>({
 
       {/* Tab content */}
       <div className={styles.tabContent}>
-        {/* Statistics Tab */}
-        {activeTab === 'stats' && (
+        {/* {activeTab === 'stats' && (
           <StatsTab 
             totalPoints={userData.totalPoints}
             totalQuizzes={userData.totalQuizzes}
             correctAnswers={userData.correctAnswers}
             activities={activities}
           />
-        )}
+        )} */}
         
-        {/* Rankings Tab */}
         {activeTab === 'ranking' && (
           <RankingTab 
             rankings={weeklyRankings}
@@ -159,7 +160,6 @@ const [userData, setUserData] = useState<UserData>({
           />
         )}
         
-        {/* Referrals Tab */}
         {activeTab === 'referrals' && (
           <ReferralsTab 
             referralInfo={referralInfo}

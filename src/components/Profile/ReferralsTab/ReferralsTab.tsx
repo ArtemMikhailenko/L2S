@@ -1,14 +1,14 @@
-import { Share2} from 'lucide-react';
-import styles from "../../../pages/Profile/Profile.module.css"
+import { Share2 } from 'lucide-react';
+import styles from "../../../pages/Profile/Profile.module.css";
 import WebApp from "@twa-dev/sdk";
-import RewardTier from '../RewardTier/RewardTier';
+// import RewardTier from '../RewardTier/RewardTier';
 
 export interface ReferralInfo {
   code: string;
   referralsCount: number;
   pointsEarned: number;
-  nextReward: number;
-  nextRewardThreshold: number;
+//   nextReward: number;
+//   nextRewardThreshold: number;
 }
 
 export interface RewardTierInfo {
@@ -20,9 +20,10 @@ interface ReferralsTabProps {
   referralInfo: ReferralInfo;
   rewardTiers: RewardTierInfo[];
 }
+  //@ts-ignore
 
 function ReferralsTab({ referralInfo, rewardTiers }: ReferralsTabProps) {
-  // Copy referral code function
+  // Функция копирования реферального кода
   const copyReferralCode = () => {
     navigator.clipboard.writeText(referralInfo.code);
     WebApp.showPopup({
@@ -31,11 +32,12 @@ function ReferralsTab({ referralInfo, rewardTiers }: ReferralsTabProps) {
     });
   };
 
-  // Share referral link function
+  // Формируем реферальную ссылку с использованием никнейма вашего бота
   const shareReferralLink = () => {
+    const referralLink = `https://t.me/L2Sbot_bot?start=${referralInfo.code}`;
     WebApp.showPopup({
       title: "Share your link",
-      message: `Share this link with friends: https://t.me/tonquizbot?start=${referralInfo.code}`
+      message: `Share this link with friends: ${referralLink}`
     });
   };
 
@@ -70,6 +72,8 @@ function ReferralsTab({ referralInfo, rewardTiers }: ReferralsTabProps) {
         </button>
       </div>
       
+      {/* Если требуется дополнительный блок наград, раскомментируйте и доработайте его */}
+      {/*
       <div className={styles.referralRewards}>
         <h3 className={styles.sectionTitle}>Rewards</h3>
         <div className={styles.rewardInfo}>
@@ -95,6 +99,7 @@ function ReferralsTab({ referralInfo, rewardTiers }: ReferralsTabProps) {
           ))}
         </div>
       </div>
+      */}
     </div>
   );
 }
