@@ -32,8 +32,8 @@ function Profile() {
   const [activeTab, setActiveTab] = useState<'stats' | 'ranking' | 'referrals'>('stats');
   const [tonConnectUI] = useTonConnectUI();
   
-  // Mock data - in a real app, you'd fetch this from your backend
-  const [userData, setUserData] = useState<UserData>({
+//@ts-ignore
+const [userData, setUserData] = useState<UserData>({
     firstName: WebApp.initDataUnsafe?.user?.first_name || 'Иван',
     lastName: WebApp.initDataUnsafe?.user?.last_name || 'Иванов',
     walletAddress: tonConnectUI.wallet?.account.address || '0x123...abc',
@@ -44,7 +44,7 @@ function Profile() {
     level: 7,
     joinedDate: '10 Jan 2025'
   });
-
+//@ts-ignore
   const [weeklyRankings, setWeeklyRankings] = useState<Rank[]>([
     { position: 1, name: 'Alex T.', points: 870, isCurrentUser: false },
     { position: 2, name: 'Maria S.', points: 810, isCurrentUser: false },
@@ -54,6 +54,7 @@ function Profile() {
     { position: 6, name: 'Nina L.', points: 620, isCurrentUser: false },
     { position: 7, name: 'Boris M.', points: 590, isCurrentUser: false },
   ]);
+//@ts-ignore
 
   const [referralInfo, setReferralInfo] = useState<ReferralInfo>({
     code: 'TONQUIZ123',
