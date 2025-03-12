@@ -120,12 +120,12 @@ function Profile() {
     <div className={styles.profileContainer}>
       {/* Header with user info */}
       <ProfileHeader 
-        firstName={userData.firstName}
-        lastName={userData.lastName}
-        walletAddress={userData.walletAddress}
-        level={userData.level}
-        joinedDate={userData.joinedDate}
-        profileImage={userData.profileImage}
+        // firstName={userData.firstName}
+        // lastName={userData.lastName}
+        // walletAddress={userData.walletAddress}
+        // level={userData.level}
+        // joinedDate={userData.joinedDate}
+        // profileImage={userData.profileImage}
       />
 
       {/* Level progress bar */}
