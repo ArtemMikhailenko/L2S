@@ -58,7 +58,7 @@ function TonConnectPage() {
 
     try {
       // В теле запроса добавляем referrerCode, если он есть
-      const response = await fetch("http://localhost:3001/api/auth", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

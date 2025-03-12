@@ -102,7 +102,7 @@ function Profile() {
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await fetch(`http://localhost:3001/api/user/telegram/12345`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/telegram/12345`);
         const data: UserData = await response.json();
         setUserData(data);
         setReferralInfo(prev => ({ ...prev, code: data.referralCode, referralsCount: data.referralsCount, pointsEarned: data.referralPoints }));
