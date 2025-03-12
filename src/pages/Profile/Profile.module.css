@@ -1,0 +1,695 @@
+/* Profile.module.css - Updated with new color scheme */
+
+.profileContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 16px;
+    background: linear-gradient(135deg, #801a3d, #5a1329);
+    min-height: 100vh;
+    color: #f8fafc;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  /* Header styles */
+  .profileHeader {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+    background: rgba(90, 19, 41, 0.7);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .profileAvatar {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4af37, #b08b1d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .avatarInitials {
+    font-size: 32px;
+    font-weight: bold;
+    color: #801a3d;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  .profileAvatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #d4af37;
+  }
+  
+  .levelBadge {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: #d4af37;
+    color: #801a3d;
+    font-size: 12px;
+    font-weight: bold;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #5a1329;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .profileInfo {
+    flex: 1;
+  }
+  
+  .userName {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #d9d9d9;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .walletInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  
+  .walletAddress {
+    background: rgba(90, 19, 41, 0.7);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #d4af37;
+    font-family: monospace;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+  
+  .joinedInfo {
+    font-size: 14px;
+    color: #d9d9d9;
+  }
+  
+  /* Level progress */
+  .levelProgress {
+    background: rgba(90, 19, 41, 0.7);
+    padding: 16px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .levelInfo {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #d9d9d9;
+  }
+  
+  .progressBar {
+    height: 10px;
+    background: rgba(90, 19, 41, 0.8);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+  }
+  
+  .progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #d4af37, #b08b1d);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+  }
+  
+  .pointsInfo {
+    text-align: center;
+    font-size: 14px;
+    color: #d9d9d9;
+  }
+  
+  /* Tab navigation */
+  .tabNavigation {
+    display: flex;
+    margin-bottom: 20px;
+    background: rgba(90, 19, 41, 0.7);
+    border-radius: 16px;
+    padding: 4px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .tabButton {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #d9d9d9;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+  
+  .tabButton:hover {
+    color: #d4af37;
+  }
+  
+  .activeTab {
+    background: rgba(212, 175, 55, 0.2);
+    color: #d4af37;
+    box-shadow: inset 0 0 6px rgba(212, 175, 55, 0.3);
+  }
+  
+  /* Stats tab */
+  .statsTab {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .statCard {
+    background: rgba(90, 19, 41, 0.7);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .statCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .statIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(212, 175, 55, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d4af37;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .statInfo {
+    flex: 1;
+  }
+  
+  .statValue {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #d4af37;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  .statLabel {
+    font-size: 14px;
+    color: #d9d9d9;
+  }
+  
+  .recentActivity {
+    background: rgba(90, 19, 41, 0.7);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .sectionTitle {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #d4af37;
+    position: relative;
+    padding-bottom: 8px;
+  }
+  
+  .sectionTitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: #d4af37;
+    border-radius: 2px;
+  }
+  
+  .activityList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .activityItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+  }
+  
+  .activityItem:hover {
+    background: rgba(212, 175, 55, 0.1);
+  }
+  
+  .activityIcon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(212, 175, 55, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d4af37;
+  }
+  
+  .activityInfo {
+    flex: 1;
+  }
+  
+  .activityTitle {
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: #d9d9d9;
+  }
+  
+  .activityMeta {
+    font-size: 13px;
+    color: #d9d9d9;
+    opacity: 0.8;
+  }
+  
+  /* Rankings tab */
+  .rankingTab {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .rankingHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .timeSelector {
+    display: flex;
+    gap: 8px;
+    font-size: 14px;
+  }
+  
+  .timeSelector button {
+    background: none;
+    border: none;
+    color: #d9d9d9;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+  
+  .timeSelector button:hover {
+    color: #d4af37;
+  }
+  
+  .timeSelector .activeTime {
+    background: rgba(212, 175, 55, 0.2);
+    color: #d4af37;
+    box-shadow: 0 0 4px rgba(212, 175, 55, 0.3);
+  }
+  
+  .rankingList {
+    background: rgba(90, 19, 41, 0.7);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .rankingItem {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  
+  .rankingItem:hover {
+    background: rgba(212, 175, 55, 0.1);
+    transform: translateX(2px);
+  }
+  
+  .currentUser {
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+  
+  .rankPosition {
+    width: 36px;
+    margin-right: 12px;
+  }
+  
+  .topRank {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .top1 {
+    background: linear-gradient(45deg, #d4af37, #fbcf33);
+    color: #5a1329;
+  }
+  
+  .top2 {
+    background: linear-gradient(45deg, #d9d9d9, #f5f5f5);
+    color: #5a1329;
+  }
+  
+  .top3 {
+    background: linear-gradient(45deg, #ba6e26, #e18728);
+    color: #5a1329;
+  }
+  
+  .normalRank {
+    color: #d9d9d9;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+  }
+  
+  .rankName {
+    flex: 1;
+    font-size: 15px;
+    color: #d9d9d9;
+  }
+  
+  .rankPoints {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    color: #d4af37;
+  }
+  
+  .prizesInfo {
+    background: rgba(90, 19, 41, 0.7);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .prizesList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .prizeItem {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px;
+    border-radius: 10px;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  
+  .prizeItem:hover {
+    background: rgba(212, 175, 55, 0.1);
+    transform: translateX(2px);
+  }
+  
+  .prizeRank {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .firstPlace {
+    background: linear-gradient(45deg, #d4af37, #fbcf33);
+    color: #5a1329;
+  }
+  
+  .secondPlace {
+    background: linear-gradient(45deg, #d9d9d9, #f5f5f5);
+    color: #5a1329;
+  }
+  
+  .thirdPlace {
+    background: linear-gradient(45deg, #ba6e26, #e18728);
+    color: #5a1329;
+  }
+  
+  .prizeInfo {
+    flex: 1;
+  }
+  
+  .prizeName {
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: #d9d9d9;
+  }
+  
+  .prizeValue {
+    font-size: 14px;
+    color: #d4af37;
+    font-weight: 500;
+  }
+  
+  /* Referrals tab */
+  .referralsTab {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .referralStatus {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .referralCount, 
+  .referralPoints {
+    flex: 1;
+    background: rgba(90, 19, 41, 0.7);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+  }
+  
+  .referralCount:hover, 
+  .referralPoints:hover {
+    transform: translateY(-3px);
+  }
+  
+  .referralCountValue, 
+  .referralPointsValue {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .referralCountValue {
+    color: #d4af37;
+  }
+  
+  .referralPointsValue {
+    color: #d4af37;
+  }
+  
+  .referralCountLabel, 
+  .referralPointsLabel {
+    font-size: 14px;
+    color: #d9d9d9;
+  }
+  
+  .referralCode {
+    background: rgba(90, 19, 41, 0.7);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .codeContainer {
+    display: flex;
+    align-items: center;
+    background: rgba(90, 19, 41, 0.8);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+  
+  .code {
+    flex: 1;
+    padding: 12px 16px;
+    font-family: monospace;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: #d4af37;
+  }
+  
+  .copyButton {
+    background: #d4af37;
+    border: none;
+    color: #801a3d;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  
+  .copyButton:hover {
+    background: #b08b1d;
+  }
+  
+  .shareReferral {
+    text-align: center;
+  }
+  
+  .shareButton {
+    background: #d4af37;
+    border: none;
+    color: #801a3d;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .shareButton:hover {
+    background: #b08b1d;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .referralRewards {
+    background: rgba(90, 19, 41, 0.7);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .rewardInfo {
+    margin-bottom: 20px;
+  }
+  
+  .rewardInfo p {
+    margin: 0 0 12px 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #d9d9d9;
+  }
+  
+  .rewardInfo p strong {
+    color: #d4af37;
+  }
+  
+  .rewardProgress {
+    margin-top: 16px;
+  }
+  
+  .progressLabels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #d9d9d9;
+    margin-top: 6px;
+  }
+  
+  .rewardTiers {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  
+  .rewardTier {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: rgba(90, 19, 41, 0.8);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+  }
+  
+  .rewardTier:hover {
+    background: rgba(212, 175, 55, 0.1);
+    transform: translateX(2px);
+    border-color: rgba(212, 175, 55, 0.3);
+  }
+  
+  .tierCount {
+    flex: 1;
+    font-size: 15px;
+    color: #d9d9d9;
+  }
+  
+  .tierReward {
+    font-size: 15px;
+    font-weight: 600;
+    color: #d4af37;
+    margin-right: 8px;
+  }
