@@ -31,7 +31,7 @@ interface UserData {
 function Profile() {
   const [activeTab, setActiveTab] = useState<'stats' | 'ranking' | 'referrals'>('stats');
   const [tonConnectUI] = useTonConnectUI();
-  
+  const telegramId = WebApp.initDataUnsafe?.user?.id 
 //@ts-ignore
 const [userData, setUserData] = useState<UserData>({
     firstName: WebApp.initDataUnsafe?.user?.first_name || 'Иван',
@@ -103,18 +103,16 @@ const [userData, setUserData] = useState<UserData>({
 
   // Fetch user data on component mount
   useEffect(() => {
-    // In a real app, you would fetch the user's data here
-    // Example:
-    // async function fetchUserData() {
-    //   try {
-    //     const response = await fetch(`http://localhost:3001/api/user/${telegramId}`);
-    //     const data = await response.json();
-    //     setUserData(data);
-    //   } catch (error) {
-    //     console.error('Error fetching user data:', error);
-    //   }
-    // }
-    // fetchUserData();
+    async function fetchUserData() {
+      try {
+        const response = await fetch(`http://localhost:3001/api/user/${telegramId}`);
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
+    fetchUserData();
   }, []);
 
   return (

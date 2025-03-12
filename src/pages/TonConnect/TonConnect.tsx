@@ -1,24 +1,37 @@
+// src/pages/TonConnect/TonConnectPage.tsx
 "use client";
-
 import { useEffect, useState } from "react";
 import { TonConnectButton, useTonConnectUI } from "@tonconnect/ui-react";
+import { useLocation } from "react-router-dom";
 import styles from "./TonConnect.module.css";
 import WebApp from "@twa-dev/sdk";
 
 function TonConnectPage() {
   const [tonConnectUI] = useTonConnectUI();
   const [isConnected, setIsConnected] = useState(false);
+  const location = useLocation();
+  const [referrerCode, setReferrerCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Извлекаем параметр ref из URL, если он есть
+    const params = new URLSearchParams(location.search);
+    const ref = params.get("ref");
+    if (ref) {
+      setReferrerCode(ref);
+      console.log("Referral code detected:", ref);
+    }
+  }, [location]);
 
   useEffect(() => {
     console.log("TonConnect UI initialized", tonConnectUI);
     
-    // Check if wallet is already connected on mount
+    // Если кошелек уже подключен при монтировании
     if (tonConnectUI.wallet) {
       console.log("Wallet detected on mount:", tonConnectUI.wallet);
       handleAfterConnect();
     }
 
-    // Add subscription to wallet changes
+    // Подписка на изменения статуса кошелька
     const unsubscribe = tonConnectUI.onStatusChange(wallet => {
       console.log("Wallet status changed:", wallet);
       if (wallet) {
@@ -28,10 +41,7 @@ function TonConnectPage() {
       }
     });
 
-    // Cleanup subscription on unmount
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, [tonConnectUI]);
 
   const handleAfterConnect = async () => {
@@ -39,7 +49,7 @@ function TonConnectPage() {
     const telegramId = WebApp.initDataUnsafe?.user?.id || '12345';
     const telegramName = WebApp.initDataUnsafe?.user?.first_name || 'local';
 
-    console.log("Attempting authentication with:", { walletAddress, telegramId, telegramName });
+    console.log("Attempting authentication with:", { walletAddress, telegramId, telegramName, referrerCode });
 
     if (!walletAddress || !telegramId) {
       console.error("Wallet or Telegram data is missing.");
@@ -47,6 +57,7 @@ function TonConnectPage() {
     }
 
     try {
+      // В теле запроса добавляем referrerCode, если он есть
       const response = await fetch("http://localhost:3001/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,6 +65,7 @@ function TonConnectPage() {
           walletAddress,
           telegramId,
           telegramName,
+          referrerCode,  // может быть null, сервер обработает
         }),
       });
 
@@ -64,7 +76,6 @@ function TonConnectPage() {
 
       const data = await response.json();
       console.log("Server response:", data);
-
       setIsConnected(true);
     } catch (error) {
       console.error("Auth error:", error);
@@ -98,9 +109,7 @@ function TonConnectPage() {
           </div>
 
           <div className={styles.walletArea}>
-            <TonConnectButton
-              className={styles.connectButton}
-            />
+            <TonConnectButton className={styles.connectButton} />
             <div className={styles.walletNote}>Supported: Tonkeeper, TonHub, and others</div>
           </div>
 

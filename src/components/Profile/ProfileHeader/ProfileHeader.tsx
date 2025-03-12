@@ -18,14 +18,13 @@ const ProfileHeader: React.FC = () => {
   const firstName = telegramUser.first_name || 'User';
   const lastName = telegramUser.last_name || '';
   const profileImage = telegramUser.photo_url || null;
-
+  const telegramID = telegramUser.id || null
   // Получаем данные подключения кошелька
   const [tonConnectUI] = useTonConnectUI();
   const walletAddress = tonConnectUI.wallet?.account.address || '0x000...0000';
 
   // Задаем уровень и дату регистрации (можно заменить на реальные данные)
   const level = 1;
-  const joinedDate = 'Unknown';
 
   return (
     <div className={styles.profileHeader}>
@@ -51,7 +50,7 @@ const ProfileHeader: React.FC = () => {
             {walletAddress.substring(0, 6)}...{walletAddress.substring(walletAddress.length - 4)}
           </span>
         </div>
-        <div className={styles.joinedInfo}>Member since {joinedDate}</div>
+        <div className={styles.joinedInfo}>Member since {telegramID}</div>
       </div>
     </div>
   );
