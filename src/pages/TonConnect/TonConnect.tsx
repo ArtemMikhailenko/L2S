@@ -1,4 +1,3 @@
-// src/pages/TonConnect/TonConnectPage.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { TonConnectButton, useTonConnectUI } from "@tonconnect/ui-react";
@@ -13,25 +12,42 @@ function TonConnectPage() {
   const [referrerCode, setReferrerCode] = useState<string | null>(null);
 
   useEffect(() => {
-    // Извлекаем параметр ref из URL, если он есть
-    const params = new URLSearchParams(location.search);
-    const ref = params.get("ref");
-    if (ref) {
-      setReferrerCode(ref);
-      console.log("Referral code detected:", ref);
+    // Extract referral code from URL parameters or Telegram startParam
+    const extractReferralCode = () => {
+      // Try to get from URL query parameters
+      const params = new URLSearchParams(location.search);
+      const refFromUrl = params.get("ref");
+      
+      // Check for Telegram start parameter (deep linking)
+      const startParam = WebApp.initDataUnsafe?.start_param;
+      
+      if (refFromUrl) {
+        console.log("Referral code detected from URL:", refFromUrl);
+        return refFromUrl;
+      } else if (startParam) {
+        console.log("Referral code detected from startParam:", startParam);
+        return startParam;
+      }
+      
+      return null;
+    };
+    
+    const code = extractReferralCode();
+    if (code) {
+      setReferrerCode(code);
     }
   }, [location]);
 
   useEffect(() => {
     console.log("TonConnect UI initialized", tonConnectUI);
     
-    // Если кошелек уже подключен при монтировании
+    // If wallet is already connected on mount
     if (tonConnectUI.wallet) {
       console.log("Wallet detected on mount:", tonConnectUI.wallet);
       handleAfterConnect();
     }
 
-    // Подписка на изменения статуса кошелька
+    // Subscribe to wallet status changes
     const unsubscribe = tonConnectUI.onStatusChange(wallet => {
       console.log("Wallet status changed:", wallet);
       if (wallet) {
@@ -57,7 +73,6 @@ function TonConnectPage() {
     }
 
     try {
-      // В теле запроса добавляем referrerCode, если он есть
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,7 +80,7 @@ function TonConnectPage() {
           walletAddress,
           telegramId,
           telegramName,
-          referrerCode,  // может быть null, сервер обработает
+          referrerCode,
         }),
       });
 
@@ -84,6 +99,7 @@ function TonConnectPage() {
 
   return (
     <div className={styles.pageContainer}>
+      {/* Rest of the component remains the same */}
       <div className={styles.quizElements}>
         <div className={styles.quizElement}></div>
         <div className={styles.quizElement}></div>

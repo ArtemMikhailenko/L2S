@@ -2,75 +2,78 @@ import { Share2 } from 'lucide-react';
 import styles from "../../../pages/Profile/Profile.module.css";
 import WebApp from "@twa-dev/sdk";
 // import RewardTier from '../RewardTier/RewardTier';
-
 export interface ReferralInfo {
-  code: string;
-  referralsCount: number;
-  pointsEarned: number;
-//   nextReward: number;
-//   nextRewardThreshold: number;
-}
-
-export interface RewardTierInfo {
-  friendCount: number;
-  rewardAmount: number;
-}
-
-interface ReferralsTabProps {
-  referralInfo: ReferralInfo;
-  rewardTiers: RewardTierInfo[];
-}
+    code: string;
+    referralsCount: number;
+    pointsEarned: number;
+  }
+  
+  export interface RewardTierInfo {
+    friendCount: number;
+    rewardAmount: number;
+  }
+  
+  interface ReferralsTabProps {
+    referralInfo: ReferralInfo;
+    rewardTiers: RewardTierInfo[];
+  }
+  
   //@ts-ignore
-
-function ReferralsTab({ referralInfo, rewardTiers }: ReferralsTabProps) {
-  // Функция копирования реферального кода
-  const copyReferralCode = () => {
-    navigator.clipboard.writeText(referralInfo.code);
-    WebApp.showPopup({
-      title: "Copied!",
-      message: "Referral code copied to clipboard"
-    });
-  };
-
-  // Формируем реферальную ссылку с использованием никнейма вашего бота
-  const shareReferralLink = () => {
-    const referralLink = `https://t.me/L2Sbot_bot?start=${referralInfo.code}`;
-    WebApp.showPopup({
-      title: "Share your link",
-      message: `Share this link with friends: ${referralLink}`
-    });
-  };
+  function ReferralsTab({ referralInfo, rewardTiers }: ReferralsTabProps) {
+    // Function to copy referral code
+    const copyReferralCode = () => {
+      navigator.clipboard.writeText(referralInfo.code);
+      WebApp.showPopup({
+        title: "Copied!",
+        message: "Referral code copied to clipboard"
+      });
+    };
+  
+    // Generate consistent referral links for both web and telegram bot
+    const shareReferralLink = () => {
+      // For Telegram Bot deep linking
+      const telegramBotLink = `https://t.me/L2Sbot_bot?start=${referralInfo.code}`;
+      
+      // For Web App direct link 
+      const webAppLink = `${window.location.origin}?ref=${referralInfo.code}`;
+      
+      WebApp.showPopup({
+        title: "Share your link",
+        message: `Share these links with friends:\n\nTelegram: ${telegramBotLink}\n\nWeb: ${webAppLink}`
+      });
+    };
+  
 
   return (
     <div className={styles.referralsTab}>
-      <div className={styles.referralStatus}>
-        <div className={styles.referralCount}>
-          <div className={styles.referralCountValue}>{referralInfo.referralsCount}</div>
-          <div className={styles.referralCountLabel}>Friends Joined</div>
-        </div>
-        
-        <div className={styles.referralPoints}>
-          <div className={styles.referralPointsValue}>{referralInfo.pointsEarned}</div>
-          <div className={styles.referralPointsLabel}>Points Earned</div>
-        </div>
+    <div className={styles.referralStatus}>
+      <div className={styles.referralCount}>
+        <div className={styles.referralCountValue}>{referralInfo.referralsCount}</div>
+        <div className={styles.referralCountLabel}>Friends Joined</div>
       </div>
       
-      <div className={styles.referralCode}>
-        <h3 className={styles.sectionTitle}>Your Referral Code</h3>
-        <div className={styles.codeContainer}>
-          <code className={styles.code}>{referralInfo.code}</code>
-          <button className={styles.copyButton} onClick={copyReferralCode}>
-            Copy
-          </button>
-        </div>
+      <div className={styles.referralPoints}>
+        <div className={styles.referralPointsValue}>{referralInfo.pointsEarned}</div>
+        <div className={styles.referralPointsLabel}>Points Earned</div>
       </div>
-      
-      <div className={styles.shareReferral}>
-        <button className={styles.shareButton} onClick={shareReferralLink}>
-          <Share2 size={18} />
-          <span>Share with Friends</span>
+    </div>
+    
+    <div className={styles.referralCode}>
+      <h3 className={styles.sectionTitle}>Your Referral Code</h3>
+      <div className={styles.codeContainer}>
+        <code className={styles.code}>{referralInfo.code}</code>
+        <button className={styles.copyButton} onClick={copyReferralCode}>
+          Copy
         </button>
       </div>
+    </div>
+    
+    <div className={styles.shareReferral}>
+      <button className={styles.shareButton} onClick={shareReferralLink}>
+        <Share2 size={18} />
+        <span>Share with Friends</span>
+      </button>
+    </div>
       
       {/* Если требуется дополнительный блок наград, раскомментируйте и доработайте его */}
       {/*
