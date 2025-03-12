@@ -12,23 +12,48 @@ function TonConnectPage() {
   const [referrerCode, setReferrerCode] = useState<string | null>(null);
 
   useEffect(() => {
-    // Extract referral code from URL parameters or Telegram startParam
+    // Extract referral code from various possible sources
     const extractReferralCode = () => {
-      // Try to get from URL query parameters
+      console.log("Extracting referral code...");
+      console.log("WebApp data:", WebApp.initDataUnsafe);
+      
+      // Проверяем URL параметры
       const params = new URLSearchParams(location.search);
       const refFromUrl = params.get("ref");
       
-      // Check for Telegram start parameter (deep linking)
+      // Проверяем различные возможные источники параметра из Telegram
       const startParam = WebApp.initDataUnsafe?.start_param;
       
+      // Проверяем строку initData напрямую (может содержать start_param)
+      const initData = WebApp.initData;
+        let initDataObj: Record<string, string> = {};
+        try {
+        if (initData) {
+            const paramPairs = initData.split('&');
+            paramPairs.forEach(pair => {
+            const [key, value] = pair.split('=');
+            if (key && value) {
+                initDataObj[key] = decodeURIComponent(value);
+            }
+            });
+        }
+        } catch (e) {
+        console.error("Error parsing initData:", e);
+        }
+      
+      console.log("URL ref parameter:", refFromUrl);
+      console.log("start_param:", startParam);
+      console.log("initData parsed:", initDataObj);
+      
+      // Используем первый доступный параметр
       if (refFromUrl) {
-        console.log("Referral code detected from URL:", refFromUrl);
+        console.log("Using ref from URL:", refFromUrl);
         return refFromUrl;
       } else if (startParam) {
-        console.log("Referral code detected from startParam:", startParam);
+        console.log("Using start_param:", startParam);
         return startParam;
-      }
-      
+      } 
+      console.log("No referral code found");
       return null;
     };
     
@@ -58,7 +83,7 @@ function TonConnectPage() {
     });
 
     return () => unsubscribe();
-  }, [tonConnectUI]);
+  }, [tonConnectUI, referrerCode]); // Added referrerCode to dependencies
 
   const handleAfterConnect = async () => {
     const walletAddress = tonConnectUI.wallet?.account.address;
@@ -99,7 +124,7 @@ function TonConnectPage() {
 
   return (
     <div className={styles.pageContainer}>
-      {/* Rest of the component remains the same */}
+      {/* Компонент без изменений */}
       <div className={styles.quizElements}>
         <div className={styles.quizElement}></div>
         <div className={styles.quizElement}></div>

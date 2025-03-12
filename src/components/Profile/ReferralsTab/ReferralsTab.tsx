@@ -32,7 +32,7 @@ export interface ReferralInfo {
     // Generate consistent referral links for both web and telegram bot
     const shareReferralLink = () => {
       // For Telegram Bot deep linking
-      const telegramBotLink = `https://t.me/L2Sbot_bot?start=${referralInfo.code}`;
+      const telegramBotLink = `https://t.me/L2Sbot_bot?startapp=${referralInfo.code}`;
       
       // For Web App direct link 
       const webAppLink = `${window.location.origin}?ref=${referralInfo.code}`;
