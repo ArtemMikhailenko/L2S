@@ -42,7 +42,7 @@ export interface ReferralInfo {
         message: `Share these links with friends:\n\nTelegram: ${telegramBotLink}\n\nWeb: ${webAppLink}`
       });
     };
-  
+    const telegramBotLink = `https://t.me/L2Sbot_bot?startapp=${referralInfo.code}`;
 
   return (
     <div className={styles.referralsTab}>
@@ -61,7 +61,7 @@ export interface ReferralInfo {
     <div className={styles.referralCode}>
       <h3 className={styles.sectionTitle}>Your Referral Code</h3>
       <div className={styles.codeContainer}>
-        <code className={styles.code}>{referralInfo.code}</code>
+        <code className={styles.code}>{telegramBotLink}</code>
         <button className={styles.copyButton} onClick={copyReferralCode}>
           Copy
         </button>

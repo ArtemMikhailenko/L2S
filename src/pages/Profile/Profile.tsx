@@ -41,7 +41,7 @@ function Profile() {
   const [tonConnectUI] = useTonConnectUI();
   
   const [userData, setUserData] = useState<UserData | undefined>(undefined);
-
+    const telegramID = WebApp.initDataUnsafe?.user?.id
   //@ts-ignore
   const [weeklyRankings, setWeeklyRankings] = useState<Rank[]>([
     { position: 1, name: 'Alex T.', points: 870, isCurrentUser: false },
@@ -103,7 +103,7 @@ function Profile() {
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/telegram/${userData?.telegramId}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/telegram/${telegramID}`);
         const data: UserData = await response.json();
         setUserData(data);
         setReferralInfo(prev => ({ ...prev, code: data.referralCode, referralsCount: data.referralsCount, pointsEarned: data.referralPoints }));

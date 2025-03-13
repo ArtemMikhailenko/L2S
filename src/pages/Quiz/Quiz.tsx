@@ -90,7 +90,6 @@ const Quiz: React.FC = () => {
   const handleNextQuestion = () => {
     if (questions.length === 0) return;
     
-    // Filter out already used questions
     const availableQuestions = questions.filter(q => !usedQuestionIds.has(q._id));
     
     if (availableQuestions.length === 0) {
@@ -146,7 +145,6 @@ const Quiz: React.FC = () => {
     );
   }
 
-  // Calculate progress percentage
   const progressPercentage = (usedQuestionIds.size / questions.length) * 100;
 
   return (
