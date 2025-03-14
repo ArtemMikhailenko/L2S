@@ -7,10 +7,20 @@ function Layout() {
   const [tonConnectUI] = useTonConnectUI();
   const [isConnected, setIsConnected] = useState(false);
 
+  // При изменении статуса кошелька обновляем состояние
   useEffect(() => {
-    // Проверяем наличие адреса кошелька
-    setIsConnected(!!tonConnectUI.wallet?.account?.address);
-  }, [tonConnectUI.wallet]);
+    // Если кошелек уже подключен при монтировании
+    if (tonConnectUI.wallet?.account?.address) {
+      setIsConnected(true);
+    }
+    
+    // Подписываемся на изменения статуса кошелька
+    const unsubscribe = tonConnectUI.onStatusChange((wallet) => {
+      setIsConnected(!!wallet?.account?.address);
+    });
+    
+    return () => unsubscribe();
+  }, [tonConnectUI]);
 
   return (
     <div className={styles.layout}>
