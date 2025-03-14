@@ -1,9 +1,9 @@
 /* Profile.module.css - Updated with light theme */
 
 .profileContainer {
-  max-width: 600px;
+  /* max-width: 600px; */
   margin: 0 auto;
-  padding: 16px;
+  /* padding: 16px; */
   min-width: 100vw;
   background: linear-gradient(135deg, #f8f4f5, #fff5f8);
   min-height: 100vh;
