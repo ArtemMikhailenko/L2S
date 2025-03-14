@@ -337,12 +337,11 @@
     border-top: 1px dashed #e0e0e0;
   }
   
-  /* Кнопка "Next Question" */
   .nextButton {
     background: linear-gradient(135deg, #801a3d 0%, #9c254b 100%);
     color: #d4af37;
     border: none;
-    z-index: 10 !important;
+    z-index: 100; /* Повышаем z-index */
     border-radius: 8px;
     padding: 14px 24px;
     font-size: 16px;
@@ -354,21 +353,26 @@
     justify-content: center;
     margin: 0 auto;
     box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+    pointer-events: auto; /* Гарантируем, что элемент принимает клики */
   }
+  
   .nextButton:hover:not(:disabled) {
     background: linear-gradient(135deg, #9c254b 0%, #801a3d 100%);
     transform: translateY(-2px);
     box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
   }
+  
   .nextButton:active:not(:disabled) {
     transform: translateY(0);
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
   }
+  
   .nextButton:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
     opacity: 0.7;
   }
+  
   .nextIcon {
     margin-left: 8px;
     font-size: 18px;
