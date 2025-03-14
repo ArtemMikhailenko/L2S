@@ -1,5 +1,6 @@
 .quizContainer {
     width: 100vw;
+    max-width: 600px;
     margin: 40px auto;
     /* padding: 24px; */
     /* Основной градиент фона */

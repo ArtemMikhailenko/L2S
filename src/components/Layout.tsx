@@ -4,7 +4,7 @@ import styles from './Layout.module.css';
 
 function Layout() {
   const [tonConnectUI] = useTonConnectUI();
-  const isConnected = !tonConnectUI.wallet;
+  const isConnected = tonConnectUI.wallet;
 
   return (
     <div className={styles.layout}>
