@@ -1,10 +1,16 @@
 import { Outlet, Link } from 'react-router-dom';
 import { useTonConnectUI } from '@tonconnect/ui-react';
+import { useEffect, useState } from 'react';
 import styles from './Layout.module.css';
 
 function Layout() {
   const [tonConnectUI] = useTonConnectUI();
-  const isConnected = tonConnectUI.wallet;
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    // Проверяем наличие адреса кошелька
+    setIsConnected(!!tonConnectUI.wallet?.account?.address);
+  }, [tonConnectUI.wallet]);
 
   return (
     <div className={styles.layout}>

@@ -3,16 +3,14 @@
     max-width: 600px;
     margin: 40px auto;
     /* padding: 24px; */
-    /* Основной градиент фона */
     background: linear-gradient(135deg, #d9d9d9 0%, #f4f4f4 100%);
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
-    z-index: 1; /* Чтобы анимация сзади не перекрывала контент */
+    z-index: 1; 
   }
   
-  /* Полупрозрачный большой вопросительный знак на фоне */
   .quizContainer::before {
     content: "?";
     position: absolute;
@@ -24,7 +22,6 @@
     z-index: 1;
   }
   
-  /* Дополнительный «вращающийся» слой фона (низкая непрозрачность) */
   .quizContainer::after {
     content: "";
     position: absolute;
@@ -32,7 +29,6 @@
     top: -50%;
     width: 200%;
     height: 200%;
-    /* Конусный градиент с цветами палитры */
     background: conic-gradient(
       from 45deg,
       #801a3d,
@@ -83,7 +79,6 @@
     margin-bottom: 16px;
   }
   
-  /* Общий стиль для карточек с очками и таймером */
   .scoreItem,
   .timerContainer {
     background-color: white;
@@ -97,13 +92,11 @@
     transition: transform 0.3s ease;
   }
   
-  /* При наведении слегка приподнимаем блок */
   .scoreItem:hover,
   .timerContainer:hover {
     transform: translateY(-3px);
   }
   
-  /* Подписи и значения внутри карточек */
   .scoreLabel {
     font-size: 12px;
     color: #666;
