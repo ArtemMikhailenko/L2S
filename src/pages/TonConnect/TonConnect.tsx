@@ -4,6 +4,7 @@ import { TonConnectButton, useTonConnectUI } from "@tonconnect/ui-react";
 import { useLocation } from "react-router-dom";
 import styles from "./TonConnect.module.css";
 import WebApp from "@twa-dev/sdk";
+import { useTranslation } from "react-i18next";
 
 function TonConnectPage() {
   const [tonConnectUI] = useTonConnectUI();
@@ -11,6 +12,7 @@ function TonConnectPage() {
   const location = useLocation();
   const [referrerCode, setReferrerCode] = useState(null);
   const [animateElements, setAnimateElements] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Extract referral code from various possible sources
@@ -18,14 +20,11 @@ function TonConnectPage() {
       console.log("Extracting referral code...");
       console.log("WebApp data:", WebApp.initDataUnsafe);
       
-      // Проверяем URL параметры
       const params = new URLSearchParams(location.search);
       const refFromUrl = params.get("ref");
       
-      // Проверяем различные возможные источники параметра из Telegram
       const startParam = WebApp.initDataUnsafe?.start_param;
       
-      // Проверяем строку initData напрямую (может содержать start_param)
       const initData = WebApp.initData;
         let initDataObj = {};
         try {
@@ -47,7 +46,6 @@ function TonConnectPage() {
       console.log("start_param:", startParam);
       console.log("initData parsed:", initDataObj);
       
-      // Используем первый доступный параметр
       if (refFromUrl) {
         console.log("Using ref from URL:", refFromUrl);
         return refFromUrl;
@@ -94,8 +92,8 @@ function TonConnectPage() {
 
   const handleAfterConnect = async () => {
     const walletAddress = tonConnectUI.wallet?.account.address;
-    const telegramId = WebApp.initDataUnsafe?.user?.id || '12345';
-    const telegramName = WebApp.initDataUnsafe?.user?.first_name || 'local';
+    const telegramId = WebApp.initDataUnsafe?.user?.id;
+    const telegramName = WebApp.initDataUnsafe?.user?.first_name;
 
     console.log("Attempting authentication with:", { walletAddress, telegramId, telegramName, referrerCode });
 
@@ -130,8 +128,8 @@ function TonConnectPage() {
   };
 
   return (
-    <div className={styles.pageContainer}>
-      {/* Фоновые элементы */}
+<div className={styles.pageContainer}>
+      {/* Background decorative elements */}
       <div className={styles.bgElements}>
         <div className={styles.bgCircle}></div>
         <div className={styles.bgDiamond}></div>
@@ -140,7 +138,7 @@ function TonConnectPage() {
         <div className={styles.bgDot}></div>
       </div>
 
-      {/* Плавающие элементы квиза */}
+      {/* Floating quiz elements */}
       <div className={styles.floatingElements}>
         <div className={`${styles.floatingElement} ${styles.questionMark}`}>?</div>
         <div className={`${styles.floatingElement} ${styles.exclamationMark}`}>!</div>
@@ -157,26 +155,26 @@ function TonConnectPage() {
         </div>
 
         <div className={styles.contentWrapper}>
-          {/* Шапка с логотипом */}
+          {/* Logo and header */}
           <div className={styles.logoContainer}>
             <div className={styles.logoWrapper}>
               <div className={styles.logoInner}>
                 <div className={styles.logoBrain}>
-                  <img src="/logo.png" alt="l2s" />
+                  <img src="/logo.png" alt="TON Quiz" />
                 </div>
               </div>
             </div>
-            <h1 className={styles.title}>TON QUIZ</h1>
-            <div className={styles.tagline}>Challenge Your Knowledge</div>
+            <h1 className={styles.title}>{t("title")}</h1>
+            <div className={styles.tagline}>{t("tagline")}</div>
           </div>
 
           <div className={styles.card}>
-            <h2 className={styles.subtitle}>Connect Your Wallet</h2>
+            <h2 className={styles.subtitle}>{t("connectWallet")}</h2>
 
             <div className={styles.infoBox}>
               <div className={styles.infoIcon}></div>
               <p className={styles.description}>
-                Connect your TON wallet to play the quiz game and earn crypto rewards for your knowledge.
+                {t("connectDescription")}
               </p>
             </div>
 
@@ -184,41 +182,39 @@ function TonConnectPage() {
               <TonConnectButton className={styles.connectButton} />
               <div className={styles.supportedWallets}>
                 <span className={styles.walletIcon}></span>
-                <span className={styles.walletNote}>Tonkeeper, TonHub & others</span>
+                <span className={styles.walletNote}>{t("supportedWallets")}</span>
               </div>
             </div>
 
             {isConnected && (
               <div className={styles.successMessage}>
                 <div className={styles.checkmarkIcon}></div>
-                <div className={styles.messageText}>Wallet connected successfully!</div>
+                <div className={styles.messageText}>{t("walletConnected")}</div>
               </div>
             )}
           </div>
 
-          {/* Секция преимуществ */}
+          {/* Benefits section */}
           <div className={styles.benefitsSection}>
             <div className={styles.benefitItem}>
               <div className={styles.benefitIconPlay}>
                 <img src="/question.svg" alt="" />
               </div>
-              <div className={styles.benefitText}>Answer Questions</div>
+              <div className={styles.benefitText}>{t("benefitAnswer")}</div>
             </div>
             <div className={styles.benefitItem}>
               <div className={styles.benefitIconTrophy}>
-               <img src="/win.svg" alt="" />
+                <img src="/win.svg" alt="" />
               </div>
-              <div className={styles.benefitText}>Win Contests</div>
+              <div className={styles.benefitText}>{t("benefitWin")}</div>
             </div>
             <div className={styles.benefitItem}>
               <div className={styles.benefitIconCoin}>
                 <img src="/token.svg" alt="" />
               </div>
-              <div className={styles.benefitText}>Earn TON</div>
+              <div className={styles.benefitText}>{t("benefitEarn")}</div>
             </div>
           </div>
-
-         
         </div>
 
         <div className={styles.footerDecoration}>
