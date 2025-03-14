@@ -1,6 +1,6 @@
 .container {
     display: inline-flex;
-    gap: 2px;
+    /* gap: 2px; */
     border: 1px solid #d4af37;
     border-radius: 20px;
     overflow: hidden;
@@ -10,7 +10,7 @@
     background-color: #801a3d;
     color: #d4af37;
     border: none;
-    padding: 4px 6px;
+    padding: 4px 4px;
     font-size: 0.6rem;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;

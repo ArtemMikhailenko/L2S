@@ -1,4 +1,5 @@
-import styles from "../../../pages/Profile/Profile.module.css"
+import { useTranslation } from 'react-i18next';
+import styles from "../../../pages/Profile/Profile.module.css";
 
 interface LevelProgressBarProps {
   currentLevel: number;
@@ -6,13 +7,14 @@ interface LevelProgressBarProps {
 }
 
 function LevelProgressBar({ currentLevel, totalPoints }: LevelProgressBarProps) {
+  const { t } = useTranslation();
   const progressToNextLevel = ((totalPoints % 500) / 500) * 100;
   
   return (
     <div className={styles.levelProgress}>
       <div className={styles.levelInfo}>
-        <span>Level {currentLevel}</span>
-        <span>Level {currentLevel + 1}</span>
+        <span>{t("levelText", { level: currentLevel })}</span>
+        <span>{t("levelText", { level: currentLevel + 1 })}</span>
       </div>
       <div className={styles.progressBar}>
         <div 
@@ -21,7 +23,7 @@ function LevelProgressBar({ currentLevel, totalPoints }: LevelProgressBarProps) 
         ></div>
       </div>
       <div className={styles.pointsInfo}>
-        {totalPoints % 500} / 500 points to next level
+        {t("pointsToNextLevel", { points: totalPoints % 500 })}
       </div>
     </div>
   );

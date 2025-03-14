@@ -29,7 +29,11 @@ const resources = {
       errorSomethingWentWrong: "Something went wrong",
       tryAgain: "Try Again",
       noQuestions: "No questions available",
-      pleaseContactSupport: "Please check back later or contact support."
+      pleaseContactSupport: "Please check back later or contact support.",
+      points: "points",
+      levelText: "Level {{level}}",
+      pointsToNextLevel: "{{points}} / 500 points to next level",
+       telegramID: "Telegram ID"
     }
   },
   ar: {
@@ -58,7 +62,13 @@ const resources = {
       errorSomethingWentWrong: "حدث خطأ ما",
       tryAgain: "أعد المحاولة",
       noQuestions: "لا توجد أسئلة متاحة",
-      pleaseContactSupport: "يرجى المحاولة لاحقًا أو الاتصال بالدعم."
+      pleaseContactSupport: "يرجى المحاولة لاحقًا أو الاتصال بالدعم.",
+       points: "نقاط",
+    levelText: "المستوى {{level}}",
+    pointsToNextLevel: "{{points}} / 500 نقطة للوصول إلى المستوى التالي",
+    telegramID: "معرّف تلغرام"
+
+
     }
   }
 };

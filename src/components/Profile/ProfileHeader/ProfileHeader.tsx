@@ -1,9 +1,9 @@
-// src/components/ProfileHeader/ProfileHeader.tsx
 import React from 'react';
 import { Zap } from 'lucide-react';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import WebApp from '@twa-dev/sdk';
 import styles from '../../../pages/Profile/Profile.module.css';
+import { useTranslation } from 'react-i18next';
 
 interface TelegramUser {
   first_name?: string;
@@ -13,17 +13,20 @@ interface TelegramUser {
 }
 
 const ProfileHeader: React.FC = () => {
-  // Приводим данные из Telegram к нужному типу
+  const { t } = useTranslation();
+  
+  // Retrieve Telegram user data
   const telegramUser = (WebApp.initDataUnsafe?.user as TelegramUser) || {};
   const firstName = telegramUser.first_name || 'User';
   const lastName = telegramUser.last_name || '';
   const profileImage = telegramUser.photo_url || null;
-  const telegramID = telegramUser.id || null
-  // Получаем данные подключения кошелька
+  const telegramID = telegramUser.id || null;
+  
+  // Get wallet connection data
   const [tonConnectUI] = useTonConnectUI();
   const walletAddress = tonConnectUI.wallet?.account.address || '0x000...0000';
 
-  // Задаем уровень и дату регистрации (можно заменить на реальные данные)
+  // Level is static for now (could be dynamic in a real application)
   const level = 1;
 
   return (
@@ -50,7 +53,9 @@ const ProfileHeader: React.FC = () => {
             {walletAddress.substring(0, 6)}...{walletAddress.substring(walletAddress.length - 4)}
           </span>
         </div>
-        <div className={styles.joinedInfo}>Telegram ID: {telegramID}</div>
+        <div className={styles.joinedInfo}>
+          {t("telegramID")}: {telegramID}
+        </div>
       </div>
     </div>
   );
