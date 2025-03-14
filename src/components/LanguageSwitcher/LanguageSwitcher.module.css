@@ -1,9 +1,9 @@
 .container {
     display: inline-flex;
-    gap: 4px;
+    gap: 2px;
     border: 1px solid #d4af37;
     border-radius: 20px;
-    /* overflow: hidden; */
+    overflow: hidden;
   }
   
   .button {
