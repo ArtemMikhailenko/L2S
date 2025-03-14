@@ -10,7 +10,7 @@ import { Trophy, Users } from "lucide-react";
 import ProfileHeader from '../../components/Profile/ProfileHeader/ProfileHeader';
 import LevelProgressBar from '../../components/Profile/LevelProgressBar/LevelProgressBar';
 import TabNavigation from '../../components/Profile/TabNavigation/TabNavigation';
-// import StatsTab from '../../components/Profile/StatsTab/StatisticsTab';
+import StatsTab from '../../components/Profile/StatsTab/StatisticsTab';
 import RankingTab from '../../components/Profile/RankingTab/RankingTab';
 import ReferralsTab from '../../components/Profile/ReferralsTab/ReferralsTab';
 import { Activity } from '../../components/Profile/ActivityItem/ActivityItem';
@@ -43,15 +43,7 @@ function Profile() {
   const [userData, setUserData] = useState<UserData | undefined>(undefined);
     const telegramID = WebApp.initDataUnsafe?.user?.id
   //@ts-ignore
-  const [weeklyRankings, setWeeklyRankings] = useState<Rank[]>([
-    { position: 1, name: 'Alex T.', points: 870, isCurrentUser: false },
-    { position: 2, name: 'Maria S.', points: 810, isCurrentUser: false },
-    { position: 3, name: 'Sergey K.', points: 790, isCurrentUser: false },
-    { position: 4, name: `${ WebApp.initDataUnsafe?.user?.first_name} ${WebApp.initDataUnsafe?.user?.last_name}.`, points: 710, isCurrentUser: true },
-    { position: 5, name: 'Pavel D.', points: 650, isCurrentUser: false },
-    { position: 6, name: 'Nina L.', points: 620, isCurrentUser: false },
-    { position: 7, name: 'Boris M.', points: 590, isCurrentUser: false },
-  ]);
+
 
   const [referralInfo, setReferralInfo] = useState<ReferralInfo>({
     code: "", // Пока пусто, обновим после получения данных
@@ -84,14 +76,8 @@ function Profile() {
     }
   ];
 
-  // Mock prize data
-  const prizes: Prize[] = [
-    { position: 1, name: 'First Place', value: '500 TON' },
-    { position: 2, name: 'Second Place', value: '250 TON' },
-    { position: 3, name: 'Third Place', value: '100 TON' }
-  ];
+ 
 
-  // Mock reward tiers
   const rewardTiers: RewardTierInfo[] = [
     { friendCount: 5, rewardAmount: 50 },
     { friendCount: 10, rewardAmount: 100 },
@@ -145,19 +131,18 @@ function Profile() {
 
       {/* Tab content */}
       <div className={styles.tabContent}>
-        {/* {activeTab === 'stats' && (
+        {activeTab === 'stats' && (
           <StatsTab 
             totalPoints={userData.totalPoints}
             totalQuizzes={userData.totalQuizzes}
             correctAnswers={userData.correctAnswers}
             activities={activities}
           />
-        )} */}
+        )}
         
         {activeTab === 'ranking' && (
           <RankingTab 
-            rankings={weeklyRankings}
-            prizes={prizes}
+            currentUserTelegramId={telegramID}
           />
         )}
         

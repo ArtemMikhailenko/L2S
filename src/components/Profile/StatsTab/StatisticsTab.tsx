@@ -48,14 +48,14 @@ function StatsTab({ totalPoints, totalQuizzes, correctAnswers, activities }: Sta
         </div>
       </div>
       
-      <div className={styles.recentActivity}>
+      {/* <div className={styles.recentActivity}>
         <h3 className={styles.sectionTitle}>Recent Activity</h3>
         <div className={styles.activityList}>
           {activities.map((activity, index) => (
             <ActivityItem key={index} activity={activity} />
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

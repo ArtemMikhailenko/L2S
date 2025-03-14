@@ -1,5 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import styles from './Quiz.module.css';
+import { useTonConnectUI } from '@tonconnect/ui-react';
+import WebApp from '@twa-dev/sdk';
 
 interface Question {
   _id: string;
@@ -7,7 +9,24 @@ interface Question {
   correctAnswer: string;
   wrongAnswers: string[];
 }
-
+declare global {
+    interface Window {
+      show_9078748?: (arg?: any) => Promise<void>;
+    }
+  }
+  
+  function showRewardedAd() {
+    if (typeof window.show_9078748 === 'function') {
+      return window.show_9078748().then(() => {
+        console.log('Пользователь досмотрел рекламу');
+      }).catch(err => {
+        console.error('Ошибка при показе рекламы:', err);
+      });
+    } else {
+      console.warn('show_9078748 не определён. Проверьте, подключён ли скрипт.');
+      return Promise.resolve();
+    }
+  }
 const Quiz: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [usedQuestionIds, setUsedQuestionIds] = useState<Set<string>>(new Set());
@@ -20,7 +39,61 @@ const Quiz: React.FC = () => {
   const [questionCount, setQuestionCount] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number>(30);
   const [timerActive, setTimerActive] = useState<boolean>(false);
+  const [tonConnectUI] = useTonConnectUI();
 
+  const sendTokens = async (wallet: string, amount: number) => {
+    try {
+      console.log(`Sending ${amount} tokens to ${wallet}`);
+      
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/jetton/transfer`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: wallet, amount }),      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null) || await response.text();
+        throw new Error(`Token transfer failed: ${response.status} - ${JSON.stringify(errorData)}`);
+      }
+      
+      const result = await response.json();
+      console.log('Tokens sent successfully:', result);
+      return result;
+    } catch (error:any) {
+      console.error('Error sending tokens:', error);
+      return { success: false, error: error.message };
+    }
+  };
+  
+const handleAnswer = (selected: string) => {
+    if (!currentQuestion || feedback !== null) return;
+    
+    setSelectedAnswer(selected);
+    const isCorrect = selected === currentQuestion.correctAnswer;
+    setFeedback(isCorrect ? 'Correct!' : 'Wrong!');
+    
+    if (isCorrect) {
+      setScore(prev => prev + 1);
+    //   sendTokens('UQByL9EhIiBMPP9zp9V-rLaNwlwqybYB1Asa1mmbdcZyFb3G',10)
+      // Добавляем 10 очков на сервере
+      const telegramId = WebApp.initDataUnsafe?.user?.id; // или откуда вы берёте telegramId
+      if (telegramId) {
+        fetch(`${import.meta.env.VITE_API_URL}/api/user/add-points `, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ telegramId, points: 10 }),
+        })
+          .then(res => res.json())
+          .then(data => {
+            console.log('Points added:', data);
+          })
+          .catch(err => console.error('Error adding points:', err));
+      }
+    }
+    
+    setQuestionCount(prevCount => prevCount + 1);
+    setTimerActive(false);
+  };
+  
   // Запрос списка вопросов с бэкенда
   const fetchQuestions = async () => {
     try {
@@ -48,19 +121,21 @@ const Quiz: React.FC = () => {
   useEffect(() => {
     fetchQuestions();
   }, []);
-
+  useEffect(() => {
+    if (questionCount !== 0 && questionCount % 5 === 0) {
+      showRewardedAd();
+    }
+  }, [questionCount]);
   // Timer effect
   useEffect(() => {
     let timer: number | undefined;
-    
     if (timerActive && timeLeft > 0) {
       timer = window.setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1);
+        setTimeLeft(prevTime => prevTime - 1);
       }, 1000);
     } else if (timeLeft === 0 && currentQuestion) {
       handleTimeUp();
     }
-    
     return () => {
       if (timer) clearInterval(timer);
     };
@@ -72,34 +147,22 @@ const Quiz: React.FC = () => {
     setTimerActive(false);
   };
 
-  const handleAnswer = (selected: string) => {
-    if (!currentQuestion || feedback !== null) return;
-    
-    setSelectedAnswer(selected);
-    const isCorrect = selected === currentQuestion.correctAnswer;
-    
-    setFeedback(isCorrect ? 'Correct!' : 'Wrong!');
-    if (isCorrect) {
-      setScore(prevScore => prevScore + 1);
-    }
-    
-    setQuestionCount(prevCount => prevCount + 1);
-    setTimerActive(false);
-  };
+  // Получаем адрес кошелька из TON Connect
+  // Предполагаем, что tonConnectUI.wallet уже доступен в родительском компоненте или через контекст
+  // Если это не так, нужно передавать адрес как пропс или получать его через другой хук.
+  const walletAddress = tonConnectUI.wallet?.account.address || '';
+
+
 
   const handleNextQuestion = () => {
     if (questions.length === 0) return;
-    
     const availableQuestions = questions.filter(q => !usedQuestionIds.has(q._id));
-    
     if (availableQuestions.length === 0) {
       setFeedback("You've completed all questions!");
       return;
     }
-    
     const randomIndex = Math.floor(Math.random() * availableQuestions.length);
     const nextQuestion = availableQuestions[randomIndex];
-    
     setCurrentQuestion(nextQuestion);
     setUsedQuestionIds(prev => new Set([...prev, nextQuestion._id]));
     setFeedback(null);
@@ -108,7 +171,6 @@ const Quiz: React.FC = () => {
     setTimerActive(true);
   };
 
-  // Вычисляем порядок вариантов ответа один раз при изменении currentQuestion
   const options = useMemo(() => {
     if (!currentQuestion) return [];
     const arr = [...currentQuestion.wrongAnswers, currentQuestion.correctAnswer];

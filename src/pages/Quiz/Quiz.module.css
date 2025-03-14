@@ -1,445 +1,514 @@
-/* Quiz.module.css */
 .quizContainer {
     max-width: 800px;
-    margin: 40px auto;
-    padding: 24px;
-    background-color: #d9d9d9;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, #801a3d 0%, #580f28 100%);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
   }
   
   .quizContainer::before {
-    content: "?";
+    content: "";
     position: absolute;
-    right: -40px;
-    top: -40px;
-    font-size: 180px;
-    font-weight: bold;
-    color: rgba(128, 26, 61, 0.05);
-    z-index: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
+                      radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 60%);
+    z-index: 1;
+  }
+  
+  .quizContainer > * {
+    position: relative;
+    z-index: 2;
   }
   
   .quizHeader {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(217, 217, 217, 0.1);
   }
   
   .scoreBoard {
     display: flex;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 1.5rem;
   }
   
   .scoreItem {
-    background-color: white;
-    border-radius: 8px;
-    padding: 8px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    border: 2px solid #801a3d;
-    min-width: 80px;
+    background: rgba(217, 217, 217, 0.1);
+    padding: 0.6rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(217, 217, 217, 0.2);
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease;
+  }
+  
+  .scoreItem:hover {
+    transform: translateY(-3px);
   }
   
   .scoreLabel {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 4px;
+    font-size: 0.8rem;
+    color: #d9d9d9;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
   
   .scoreValue {
-    font-size: 18px;
+    font-size: 1.4rem;
     font-weight: bold;
-    color: #801a3d;
+    color: #d4af37;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
   }
   
   .timerContainer {
-    background-color: white;
-    border-radius: 8px;
-    padding: 8px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    border: 2px solid #801a3d;
-    width: 120px;
+    position: relative;
+    text-align: center;
+    background: rgba(217, 217, 217, 0.1);
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(217, 217, 217, 0.2);
+    backdrop-filter: blur(5px);
   }
   
   .timerLabel {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 2px;
+    font-size: 0.8rem;
+    color: #d9d9d9;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
   
   .timerValue {
-    font-size: 22px;
+    font-size: 1.8rem;
     font-weight: bold;
     color: #801a3d;
-    margin-bottom: 4px;
+    text-shadow: 0 0 10px rgba(128, 26, 61, 0.4);
+    transition: color 0.3s ease;
   }
   
   .timerBar {
-    width: 100%;
     height: 6px;
-    background-color: #e0e0e0;
+    background: rgba(217, 217, 217, 0.2);
     border-radius: 3px;
+    margin-top: 0.5rem;
     overflow: hidden;
   }
   
   .timerProgress {
     height: 100%;
-    background-color: #801a3d;
-    transition: width 1s linear;
+    background: #801a3d;
+    transition: width 1s linear, background-color 0.3s ease;
   }
   
   .progressBar {
     height: 8px;
-    background-color: rgba(255, 255, 255, 0.5);
+    background: rgba(217, 217, 217, 0.1);
     border-radius: 4px;
-    margin-bottom: 24px;
+    margin-bottom: 1.5rem;
     overflow: hidden;
+    border: 1px solid rgba(217, 217, 217, 0.1);
   }
   
   .progressBarFill {
     height: 100%;
-    background-color: #d4af37;
-    transition: width 0.5s ease-out;
+    background: linear-gradient(90deg, #d4af37, #e7c352);
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
   }
   
   .questionCard {
-    background-color: white;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
-    position: relative;
-    z-index: 1;
-    border-left: 5px solid #801a3d;
+    background: rgba(217, 217, 217, 0.08);
+    padding: 2rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(217, 217, 217, 0.15);
+    backdrop-filter: blur(5px);
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .questionCard:hover {
+    transform: translateZ(10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   }
   
   .questionText {
-    font-size: 20px;
-    font-weight: 600;
-    color: #333;
-    margin-top: 0;
-    margin-bottom: 24px;
+    color: #d9d9d9;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
     line-height: 1.4;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     position: relative;
-    padding-left: 16px;
+    padding-left: 2rem;
   }
   
-  .questionText::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 8px;
-    height: calc(100% - 16px);
-    width: 4px;
-    background-color: #d4af37;
-    border-radius: 2px;
-  }
   
   .optionsContainer {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
   }
   
   .optionButton {
-    background-color: #f5f5f5;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 16px;
-    text-align: left;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
     display: flex;
     align-items: center;
+    background: rgba(217, 217, 217, 0.1);
+    border: 1px solid rgba(217, 217, 217, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
   }
   
-  .optionButton:hover:not(:disabled) {
-    background-color: #efefef;
-    border-color: #d4af37;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  .optionButton::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #d4af37;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
   
-  .optionButton:active:not(:disabled) {
-    transform: translateY(0);
+  .optionButton:hover {
+    background: rgba(217, 217, 217, 0.15);
+    transform: translateX(5px);
+  }
+  
+  .optionButton:hover::before {
+    opacity: 1;
   }
   
   .optionIndex {
     display: flex;
-    align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    background-color: #801a3d;
-    color: white;
+    align-items: center;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    background: rgba(128, 26, 61, 0.8);
+    color: #d9d9d9;
     font-weight: bold;
-    margin-right: 12px;
+    margin-right: 1rem;
     flex-shrink: 0;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  
+  .optionButton:hover .optionIndex {
+    background: #801a3d;
+    transform: scale(1.1);
   }
   
   .optionText {
-    flex-grow: 1;
-    color: black;
+    color: #d9d9d9;
+    font-size: 1rem;
   }
   
   .correctOption {
-    background-color: rgba(76, 175, 80, 0.1) !important;
-    border-color: #4CAF50 !important;
+    background: rgba(50, 180, 75, 0.2) !important;
+    border-color: rgba(50, 180, 75, 0.4) !important;
   }
   
   .correctOption .optionIndex {
-    background-color: #4CAF50;
+    background: rgb(50, 180, 75) !important;
+  }
+  
+  .correctOption::before {
+    background: rgb(50, 180, 75) !important;
+    opacity: 1;
   }
   
   .wrongOption {
-    background-color: rgba(244, 67, 54, 0.1) !important;
-    border-color: #F44336 !important;
+    background: rgba(255, 82, 82, 0.2) !important;
+    border-color: rgba(255, 82, 82, 0.4) !important;
   }
   
   .wrongOption .optionIndex {
-    background-color: #F44336;
+    background: rgb(255, 82, 82) !important;
+  }
+  
+  .wrongOption::before {
+    background: rgb(255, 82, 82) !important;
+    opacity: 1;
   }
   
   .feedbackContainer {
-    background-color: white;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
     display: flex;
     align-items: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    animation: slideFadeIn 0.5s ease-out;
-    border-left: 5px solid #801a3d;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    animation: slideFadeIn 0.5s ease forwards;
+    transform-origin: center;
   }
   
   @keyframes slideFadeIn {
-    from {
+    0% {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(20px);
     }
-    to {
+    100% {
       opacity: 1;
       transform: translateY(0);
     }
   }
   
   .correctFeedback {
-    border-left-color: #4CAF50;
+    background: rgba(50, 180, 75, 0.15);
+    border: 1px solid rgba(50, 180, 75, 0.3);
   }
   
   .wrongFeedback {
-    border-left-color: #F44336;
+    background: rgba(255, 82, 82, 0.15);
+    border: 1px solid rgba(255, 82, 82, 0.3);
   }
   
   .timeUpFeedback {
-    border-left-color: #FF9800;
+    background: rgba(255, 165, 0, 0.15);
+    border: 1px solid rgba(255, 165, 0, 0.3);
   }
   
   .feedbackIcon {
     width: 40px;
     height: 40px;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     border-radius: 50%;
-    font-size: 20px;
-    font-weight: bold;
-    margin-right: 12px;
+    font-size: 1.3rem;
+    margin-right: 1rem;
   }
   
   .correctFeedback .feedbackIcon {
-    background-color: rgba(76, 175, 80, 0.1);
-    color: #4CAF50;
+    background: rgba(50, 180, 75, 0.2);
+    color: rgb(50, 180, 75);
   }
   
   .wrongFeedback .feedbackIcon {
-    background-color: rgba(244, 67, 54, 0.1);
-    color: #F44336;
+    background: rgba(255, 82, 82, 0.2);
+    color: rgb(255, 82, 82);
   }
   
   .timeUpFeedback .feedbackIcon {
-    background-color: rgba(255, 152, 0, 0.1);
-    color: #FF9800;
+    background: rgba(255, 165, 0, 0.2);
+    color: rgb(255, 165, 0);
   }
   
   .feedbackText {
-    font-size: 18px;
+    font-size: 1.1rem;
     font-weight: bold;
-    flex-grow: 1;
-  }
-  
-  .correctFeedback .feedbackText {
-    color: #4CAF50;
-  }
-  
-  .wrongFeedback .feedbackText {
-    color: #F44336;
-  }
-  
-  .timeUpFeedback .feedbackText {
-    color: #FF9800;
+    color: #d9d9d9;
   }
   
   .correctAnswerText {
-    font-size: 14px;
-    color: #555;
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px dashed #e0e0e0;
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: rgba(217, 217, 217, 0.8);
   }
   
   .nextButton {
-    background-color: #801a3d;
-    color: #d4af37;
-    border: none;
-    border-radius: 8px;
-    padding: 14px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(90deg, #d4af37, #e7c352);
+    color: #801a3d;
+    font-weight: bold;
+    padding: 1rem 2rem;
+    border-radius: 12px;
     margin: 0 auto;
-    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1.1rem;
+    position: relative;
+    overflow: hidden;
   }
   
-  .nextButton:hover:not(:disabled) {
-    background-color: #9c254b;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
+  .nextButton::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.7s ease;
   }
   
-  .nextButton:active:not(:disabled) {
-    transform: translateY(0);
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+  .nextButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 15px rgba(212, 175, 55, 0.3);
   }
   
-  .nextButton:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-    opacity: 0.7;
+  .nextButton:hover::before {
+    left: 100%;
   }
   
   .nextIcon {
-    margin-left: 8px;
-    font-size: 18px;
+    margin-left: 0.8rem;
+    transition: transform 0.3s ease;
   }
   
-  /* Loading and Error Styles */
+  .nextButton:hover .nextIcon {
+    transform: translateX(5px);
+  }
+  
   .loaderContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 300px;
-    background-color: #d9d9d9;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    min-height: 300px;
+    color: #d9d9d9;
   }
   
   .loader {
     width: 50px;
     height: 50px;
-    border: 5px solid rgba(128, 26, 61, 0.2);
+    border: 4px solid rgba(217, 217, 217, 0.2);
+    border-top: 4px solid #d4af37;
     border-radius: 50%;
-    border-top-color: #801a3d;
-    animation: spin 1s infinite linear;
-    margin-bottom: 16px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
   }
   
   @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
   
   .errorContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    background-color: #d9d9d9;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     text-align: center;
+    padding: 2rem;
+    background: rgba(217, 217, 217, 0.08);
+    border-radius: 16px;
+    color: #d9d9d9;
   }
   
   .errorIcon {
-    font-size: 40px;
-    margin-bottom: 16px;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #d4af37;
   }
   
   .error {
-    color: #F44336;
-    margin-bottom: 20px;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 82, 82, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid rgba(255, 82, 82, 0.5);
   }
   
   .retryButton {
-    background-color: #801a3d;
-    color: white;
-    border: none;
+    background: linear-gradient(90deg, #d4af37, #e7c352);
+    color: #801a3d;
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
     border-radius: 8px;
-    padding: 12px 24px;
-    font-size: 16px;
+    border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 1rem;
   }
   
   .retryButton:hover {
-    background-color: #9c254b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
   }
   
-  /* Media Queries */
-  @media screen and (min-width: 768px) {
-    .optionsContainer {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  
-  @media screen and (max-width: 600px) {
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
     .quizContainer {
-      padding: 16px;
-      margin: 20px auto;
-    }
-    
-    .questionText {
-      font-size: 18px;
-    }
-    
-    .optionButton {
-      padding: 12px;
+      padding: 1.5rem;
+      border-radius: 15px;
     }
     
     .quizHeader {
       flex-direction: column;
-      align-items: center;
+      gap: 1rem;
     }
     
-    .scoreBoard {
-      margin-bottom: 16px;
-      width: 100%;
-      justify-content: center;
+    .questionText {
+      font-size: 1.3rem;
     }
     
-    .timerContainer {
-      width: 100%;
-      max-width: 200px;
+    .optionsContainer {
+      grid-template-columns: 1fr;
     }
+  }
+  
+  /* Adding a unique decorative element */
+  .quizContainer::after {
+    content: "";
+    position: absolute;
+    bottom: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+    animation: pulse 8s infinite alternate;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.2;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.3;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.2;
+    }
+  }
+  
+  /* Quiz Animation */
+  .questionCard {
+    animation: fadeInUp 0.5s ease forwards;
+  }
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Adding a decorative quiz pattern */
+  .questionCard::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    background-image: radial-gradient(circle, #d4af37 2px, transparent 3px);
+    background-size: 15px 15px;
+    opacity: 0.1;
+    z-index: 0;
   }
