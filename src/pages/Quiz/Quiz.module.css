@@ -448,7 +448,7 @@
   
   @media screen and (max-width: 600px) {
     .quizContainer {
-      padding: 16px;
+      /* padding: 16px; */
       margin: 20px auto;
     }
     .questionText {
