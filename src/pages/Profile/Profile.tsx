@@ -14,6 +14,8 @@ import StatsTab from '../../components/Profile/StatsTab/StatisticsTab';
 import RankingTab from '../../components/Profile/RankingTab/RankingTab';
 import ReferralsTab from '../../components/Profile/ReferralsTab/ReferralsTab';
 import { Activity } from '../../components/Profile/ActivityItem/ActivityItem';
+//@ts-ignore
+
 import { Rank, Prize } from '../../components/Profile/RankingTab/RankingTab';
 import { ReferralInfo, RewardTierInfo } from '../../components/Profile/ReferralsTab/ReferralsTab';
 

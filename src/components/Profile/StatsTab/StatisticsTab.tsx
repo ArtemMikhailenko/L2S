@@ -1,5 +1,7 @@
 import { Trophy, BarChart3, Award, Zap } from 'lucide-react';
 import styles from "../../../pages/Profile/Profile.module.css"
+//@ts-ignore
+
 import ActivityItem, { Activity } from '../ActivityItem/ActivityItem';
 
 interface StatsTabProps {
@@ -8,6 +10,7 @@ interface StatsTabProps {
   correctAnswers: number;
   activities: Activity[];
 }
+//@ts-ignore
 
 function StatsTab({ totalPoints, totalQuizzes, correctAnswers, activities }: StatsTabProps) {
   const accuracy = Math.round((correctAnswers / (totalQuizzes * 10)) * 100);

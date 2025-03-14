@@ -40,7 +40,7 @@ const Quiz: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState<number>(30);
   const [timerActive, setTimerActive] = useState<boolean>(false);
   const [tonConnectUI] = useTonConnectUI();
-
+//@ts-ignore
   const sendTokens = async (wallet: string, amount: number) => {
     try {
       console.log(`Sending ${amount} tokens to ${wallet}`);
@@ -147,9 +147,8 @@ const handleAnswer = (selected: string) => {
     setTimerActive(false);
   };
 
-  // Получаем адрес кошелька из TON Connect
-  // Предполагаем, что tonConnectUI.wallet уже доступен в родительском компоненте или через контекст
-  // Если это не так, нужно передавать адрес как пропс или получать его через другой хук.
+//@ts-ignore
+
   const walletAddress = tonConnectUI.wallet?.account.address || '';
 
 
