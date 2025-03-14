@@ -1,6 +1,7 @@
 .quizContainer {
-    width: 100vw;
-    max-width: 450px;
+    width: 100%;              /* используем 100% ширины контейнера */
+    max-width: 450px;   
+    min-width: 350px;
     margin: 40px auto;
     /* padding: 24px; */
     background: linear-gradient(135deg, #d9d9d9 0%, #f4f4f4 100%);
