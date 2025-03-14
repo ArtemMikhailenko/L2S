@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 import WebApp from "@twa-dev/sdk";
 import styles from "./Profile.module.css";
-import { Trophy, Users } from "lucide-react";
 
 // Import components
 import ProfileHeader from '../../components/Profile/ProfileHeader/ProfileHeader';
@@ -13,7 +12,6 @@ import TabNavigation from '../../components/Profile/TabNavigation/TabNavigation'
 // import StatsTab from '../../components/Profile/StatsTab/StatisticsTab';
 import RankingTab from '../../components/Profile/RankingTab/RankingTab';
 import ReferralsTab from '../../components/Profile/ReferralsTab/ReferralsTab';
-import { Activity } from '../../components/Profile/ActivityItem/ActivityItem';
 //@ts-ignore
 
 import { Rank, Prize } from '../../components/Profile/RankingTab/RankingTab';
@@ -55,28 +53,7 @@ function Profile() {
     // nextRewardThreshold: 10,
   });
 
-  // Mock activity data
-  //@ts-ignore
-  const activities: Activity[] = [
-    {
-      icon: Trophy,
-      title: 'Completed "TON Basics" quiz',
-      date: 'Today, 14:32',
-      points: 120
-    },
-    {
-      icon: Users,
-      title: 'New referral joined',
-      date: 'Yesterday',
-      points: 50
-    },
-    {
-      icon: Trophy,
-      title: 'Completed "Blockchain Fundamentals"',
-      date: 'Mar 9, 2025',
-      points: 80
-    }
-  ];
+
 
  
 
@@ -122,7 +99,7 @@ function Profile() {
       {/* Level progress bar */}
       <LevelProgressBar 
         currentLevel={userData.level}
-        totalPoints={userData.referralPoints}
+        totalPoints={userData.referralPoints + userData.totalPoints}
       />
 
       {/* Navigation tabs */}
