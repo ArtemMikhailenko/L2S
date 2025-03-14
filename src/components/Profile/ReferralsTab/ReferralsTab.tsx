@@ -24,7 +24,7 @@ function shortenLink(link: string, front = 5, back = 5): string {
   if (link.length <= front + back) return link;
   return `${link.slice(0, front)}...${link.slice(-back)}`;
 }
-
+//@ts-ignore
 function ReferralsTab({ referralInfo, rewardTiers }: ReferralsTabProps) {
   const { t } = useTranslation();
 
