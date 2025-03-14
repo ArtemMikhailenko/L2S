@@ -338,6 +338,7 @@
   }
   
   .nextButton {
+    position: relative;
     background: linear-gradient(135deg, #801a3d 0%, #9c254b 100%);
     color: #d4af37;
     border: none;
