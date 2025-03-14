@@ -1,318 +1,363 @@
 .pageContainer {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #801a3d 0%, #5a142b 100%);
     position: relative;
+    min-height: 100vh;
+    background-color: #f8f8f8;
     overflow: hidden;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Roboto', sans-serif;
   }
   
-  /* Floating quiz elements animation */
-  .quizElements {
+  /* Background elements */
+  .bgElements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+  }
+  
+  .bgCircle {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0) 70%);
+    top: -100px;
+    right: -100px;
+  }
+  
+  .bgDiamond {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    transform: rotate(45deg);
+    background: radial-gradient(circle, rgba(128, 26, 61, 0.05) 0%, rgba(128, 26, 61, 0) 70%);
+    bottom: -100px;
+    left: -100px;
+  }
+  
+  .bgDot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(217, 217, 217, 0.6);
+  }
+  
+  .bgDot:nth-child(3) {
+    top: 20%;
+    left: 15%;
+  }
+  
+  .bgDot:nth-child(4) {
+    top: 70%;
+    right: 25%;
+  }
+  
+  .bgDot:nth-child(5) {
+    bottom: 15%;
+    left: 40%;
+  }
+  
+  /* Floating elements */
+  .floatingElements {
     position: absolute;
     width: 100%;
     height: 100%;
+    z-index: 1;
     pointer-events: none;
   }
   
-  .quizElement {
+  .floatingElement {
     position: absolute;
-    border-radius: 50%;
-    opacity: 0.1;
-    background: #d4af37;
-    animation: float 15s infinite ease-in-out;
+    animation: float 8s infinite ease-in-out;
   }
   
-  .quizElement:nth-child(1) {
-    width: 200px;
-    height: 200px;
-    top: 10%;
+  .questionMark {
+    top: 30%;
     left: 5%;
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(128, 26, 61, 0.3);
     animation-delay: 0s;
-    animation-duration: 25s;
   }
   
-  .quizElement:nth-child(2) {
-    width: 150px;
-    height: 150px;
-    top: 60%;
-    right: 8%;
-    animation-delay: 5s;
-    animation-duration: 18s;
+  .exclamationMark {
+    top: 20%;
+    right: 10%;
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(212, 175, 55, 0.4);
+    animation-delay: 2s;
   }
   
-  .quizElement:nth-child(3) {
-    width: 100px;
-    height: 100px;
-    bottom: 10%;
-    left: 15%;
-    animation-delay: 10s;
-    animation-duration: 22s;
+  .coinIcon {
+    bottom: 25%;
+    right: 15%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(212, 175, 55, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-delay: 1s;
+  }
+  
+  .coinInner {
+    font-size: 10px;
+    font-weight: bold;
+    color: rgba(128, 26, 61, 0.8);
   }
   
   @keyframes float {
     0%, 100% {
-      transform: translateY(0) rotate(0deg);
-    }
-    25% {
-      transform: translateY(-15px) rotate(5deg);
-    }
-    50% {
-      transform: translateY(0) rotate(0deg);
-    }
-    75% {
-      transform: translateY(15px) rotate(-5deg);
-    }
-  }
-  
-  /* Main container */
-  .container {
-    max-width: 500px;
-    width: 90%;
-    margin: 0 auto;
-    padding: 40px 0;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    justify-content: center;
-  }
-  
-  /* Glow effect */
-  .glowEffect {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: rgba(212, 175, 55, 0.2);
-    filter: blur(40px);
-    z-index: -1;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: pulse 4s infinite alternate;
-  }
-  
-  @keyframes pulse {
-    0% {
-      opacity: 0.2;
-      transform: translateX(-50%) scale(1);
-    }
-    100% {
-      opacity: 0.4;
-      transform: translateX(-50%) scale(1.2);
-    }
-  }
-  
-  /* Quiz graphic */
-  .quizGraphic {
-    width: 120px;
-    height: 120px;
-    background: linear-gradient(135deg, #d4af37 0%, #b89328 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 70px;
-    font-weight: bold;
-    color: #801a3d;
-    margin-bottom: 30px;
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-    position: relative;
-    animation: bounce 3s infinite ease-in-out;
-  }
-  
-  .quizGraphic:before {
-    content: '';
-    position: absolute;
-    width: 130px;
-    height: 130px;
-    border: 3px solid #d4af37;
-    border-radius: 50%;
-    opacity: 0.6;
-    animation: pulseBorder 2s infinite;
-  }
-  
-  @keyframes bounce {
-    0%, 100% {
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-10px);
+      transform: translateY(-15px);
     }
   }
   
-  @keyframes pulseBorder {
-    0% {
-      transform: scale(1);
-      opacity: 0.6;
-    }
-    100% {
-      transform: scale(1.2);
-      opacity: 0;
-    }
-  }
-  
-  /* Content */
-  .content {
-    background: rgba(32, 6, 14, 0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  /* Main content */
+  .container {
     position: relative;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  
+  .visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Decorations */
+  .headerDecoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .decorLine {
+    height: 2px;
+    background-color: rgba(212, 175, 55, 0.3);
+    flex-grow: 1;
+  }
+  
+  .decorDiamond {
+    width: 12px;
+    height: 12px;
+    background-color: #d4af37;
+    transform: rotate(45deg);
+    margin: 0 10px;
+  }
+  
+  .contentWrapper {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
     overflow: hidden;
   }
   
-  .content:before {
+  /* Logo and header */
+  .logoContainer {
+    padding: 30px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #801a3d 0%, #9c2149 100%);
+    color: white;
+  }
+  
+  .logoWrapper {
+    width: 150px;
+    height: 150px;
+    background-color: white;
+    border-radius: 10%;
+    margin: 0 auto 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .logoInner {
+    width: 130px;
+    height: 130px;
+    border-radius: 10%;
+    background: linear-gradient(135deg, #d4af37 0%, #e6c960 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .logoBrain {
+    display: flex;
+    /* width: 56px;
+    height: 56px; */
+    border-radius: 50%;
+  }
+  .logoBrain img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10%;
+  }
+  .brainLeft:before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-      45deg,
-      transparent 0%,
-      rgba(212, 175, 55, 0.1) 50%,
-      transparent 100%
-    );
-    transform: rotate(45deg);
-    animation: shimmer 8s infinite linear;
-    pointer-events: none;
+    width: 16px;
+    height: 28px;
+    background-color: #801a3d;
+    border-radius: 16px 0 0 16px;
+    right: 0;
+    top: 4px;
   }
   
-  @keyframes shimmer {
-    0% {
-      top: -150%;
-      left: -150%;
-    }
-    100% {
-      top: 100%;
-      left: 100%;
-    }
-  }
-  
-  /* Logo area */
-  .logoArea {
-    display: flex;
-    align-items: center;
-    margin-bottom: 25px;
-  }
-  
-  .logoIcon {
-    font-size: 36px;
-    margin-right: 15px;
+  .brainRight:before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 28px;
+    background-color: #801a3d;
+    border-radius: 0 16px 16px 0;
+    left: 0;
+    top: 4px;
   }
   
   .title {
-    color: #d4af37;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 700;
-    margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(to right, #d4af37, #f5e7a3);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    margin: 0 0 5px;
+    letter-spacing: 1px;
+  }
+  
+  .tagline {
+    font-size: 16px;
+    opacity: 0.8;
+  }
+  
+  /* Card */
+  .card {
+    padding: 25px;
+    border-bottom: 1px solid rgba(217, 217, 217, 0.5);
   }
   
   .subtitle {
-    color: #d9d9d9;
-    font-size: 22px;
-    font-weight: 600;
-    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #801a3d;
+    margin: 0 0 20px;
     text-align: center;
   }
   
-  /* Info box */
   .infoBox {
-    background: rgba(217, 217, 217, 0.1);
-    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    background-color: rgba(217, 217, 217, 0.2);
     padding: 15px;
+    border-radius: 12px;
     margin-bottom: 25px;
-    border-left: 3px solid #d4af37;
+  }
+  
+  .infoIcon {
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgba(128, 26, 61, 0.1);
+    margin-right: 15px;
+    position: relative;
+  }
+  
+  .infoIcon:before {
+    content: 'i';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #801a3d;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 16px;
   }
   
   .description {
-    color: #d9d9d9;
-    font-size: 16px;
-    line-height: 1.5;
     margin: 0;
-    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
   }
   
-  /* Wallet area */
   .walletArea {
-    width: 100%;
-    margin-bottom: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    margin-bottom: 20px;
   }
   
-  /* .connectButton {
-    width: 100% !important;
-    height: 50px !important;
+  /* Customize TonConnect button (these will apply to the wrapper, actual button needs additional work) */
+  .connectButton {
+    /* width: 100%; */
+    margin-bottom: 10px;
+  }
+  
+  /* This will be injected but needs to target the button somehow */
+  .connectButton :global(button) {
+    background-color: #801a3d !important;
     border-radius: 12px !important;
     font-weight: 600 !important;
-    font-size: 16px !important;
-    position: relative !important;
-    overflow: hidden !important;
-    transition: transform 0.3s ease !important;
-    z-index: 1 !important;
-  } */
+    padding: 14px !important;
+    box-shadow: 0 4px 12px rgba(128, 26, 61, 0.2) !important;
+    transition: all 0.3s ease !important;
+  }
   
-  .connectButton:hover {
+  .connectButton :global(button:hover) {
+    background-color: #9c2149 !important;
     transform: translateY(-2px) !important;
   }
   
-  .connectButton:before {
-    content: "";
-    position: absolute !important;
-    top: 0 !important;
-    left: -100% !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    ) !important;
-    transition: 0.5s !important;
-    z-index: -1 !important;
+  .supportedWallets {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #777;
   }
   
-  .connectButton:hover:before {
-    left: 100% !important;
+  .walletIcon {
+    width: 16px;
+    height: 16px;
+    background-color: rgba(212, 175, 55, 0.3);
+    border-radius: 4px;
+    margin-right: 8px;
+    position: relative;
+  }
+  
+  .walletIcon:before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #d4af37;
+    border-radius: 2px;
+    top: 4px;
+    left: 4px;
   }
   
   .walletNote {
-    font-size: 14px;
-    color: rgba(217, 217, 217, 0.7);
-    margin-top: 10px;
-    text-align: center;
+    font-style: italic;
   }
   
-  /* Success message */
   .successMessage {
-    background: rgba(24, 160, 88, 0.2);
-    color: #2ee77c;
-    padding: 12px 20px;
-    border-radius: 10px;
-    margin: 0 0 20px 0;
-    text-align: center;
-    font-weight: 500;
-    animation: fadeIn 0.5s;
-    border: 1px solid rgba(46, 231, 124, 0.3);
+    display: flex;
+    align-items: center;
+    background-color: rgba(40, 167, 69, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    animation: fadeIn 0.5s ease;
   }
   
   @keyframes fadeIn {
@@ -326,106 +371,124 @@
     }
   }
   
-  /* Features */
-  .features {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin-bottom: 30px;
-  }
-  
-  .featureItem {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.3s ease;
-  }
-  
-  .featureItem:hover {
-    transform: translateY(-5px);
-  }
-  
-  .featureIcon {
-    font-size: 28px;
-    margin-bottom: 10px;
-    width: 60px;
-    height: 60px;
-    background: rgba(212, 175, 55, 0.1);
+  .checkmarkIcon {
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid rgba(212, 175, 55, 0.3);
+    background-color: #28a745;
+    margin-right: 12px;
+    position: relative;
   }
   
-  .featureText {
-    color: #d9d9d9;
-    font-size: 14px;
+  .checkmarkIcon:before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 12px;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(45deg);
+    top: 5px;
+    left: 9px;
+  }
+  
+  .messageText {
+    color: #28a745;
     font-weight: 500;
   }
   
-  /* Quiz sample */
-  .quizSample {
-    background: rgba(212, 175, 55, 0.1);
-    border-radius: 12px;
+  /* Benefits section */
+  .benefitsSection {
+    display: flex;
+    justify-content: space-around;
     padding: 20px;
-    margin-top: 10px;
-    width: 100%;
-    text-align: center;
-    border: 1px dashed rgba(212, 175, 55, 0.3);
-    position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   
-  .quizSample:hover {
-    transform: scale(1.02);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  .benefitItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 100px;
   }
   
-  .sampleQuestion {
-    color: #d4af37;
+  .benefitIconPlay,
+  .benefitIconTrophy,
+  .benefitIconCoin {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(217, 217, 217, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .benefitIconPlay img,.benefitIconTrophy img, .benefitIconCoin img {
+    width: 30px;
+    height: 30px;
+  }
+  .playTriangle {
+    width: 0;
+    height: 0;
+    border-left: 15px solid #801a3d;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    margin-left: 4px;
+  }
+  
+
+  .coinCircle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #d4af37;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .coinSymbol {
+    color: white;
+    font-weight: bold;
     font-size: 18px;
-    font-weight: 600;
+  }
+  
+  .benefitText {
+    font-size: 12px;
+    text-align: center;
+    color: #555;
+    font-weight: 500;
+  }
+  
+  .footerDecoration {
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  .footerLine {
+    height: 4px;
+    width: 60px;
+    background-color: #d9d9d9;
+    border-radius: 2px;
+    margin: 0 auto;
   }
   
   /* Media queries */
   @media (max-width: 480px) {
     .container {
-      padding: 20px 0;
+      padding: 15px;
     }
     
-    .content {
+    .benefitsSection {
+      padding: 15px 10px;
+    }
+    
+    .logoContainer {
+      padding: 20px 15px;
+    }
+    
+    .card {
       padding: 20px;
-    }
-    
-    .logoIcon {
-      font-size: 30px;
-    }
-    
-    .title {
-      font-size: 26px;
-    }
-    
-    .subtitle {
-      font-size: 18px;
-    }
-    
-    .features {
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    .featureItem {
-      flex-direction: row;
-      justify-content: flex-start;
-      width: 100%;
-    }
-    
-    .featureIcon {
-      margin-right: 15px;
-      margin-bottom: 0;
-      width: 50px;
-      height: 50px;
-      font-size: 24px;
     }
   }

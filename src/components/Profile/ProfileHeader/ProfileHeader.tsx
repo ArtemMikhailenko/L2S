@@ -50,7 +50,7 @@ const ProfileHeader: React.FC = () => {
             {walletAddress.substring(0, 6)}...{walletAddress.substring(walletAddress.length - 4)}
           </span>
         </div>
-        <div className={styles.joinedInfo}>Member since {telegramID}</div>
+        <div className={styles.joinedInfo}>Telegram ID: {telegramID}</div>
       </div>
     </div>
   );

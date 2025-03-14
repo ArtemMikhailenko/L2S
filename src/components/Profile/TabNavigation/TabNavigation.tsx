@@ -1,7 +1,7 @@
-import { PieChart, Trophy, Users } from 'lucide-react';
+import { Trophy, Users } from 'lucide-react';
 import styles from "../../../pages/Profile/Profile.module.css"
 
-type TabType = 'stats' | 'ranking' | 'referrals';
+type TabType =  'ranking' | 'referrals';
 
 interface TabNavigationProps {
   activeTab: TabType;
@@ -11,13 +11,13 @@ interface TabNavigationProps {
 function TabNavigation({ activeTab, setActiveTab }: TabNavigationProps) {
   return (
     <div className={styles.tabNavigation}>
-      <button 
+      {/* <button 
         className={`${styles.tabButton} ${activeTab === 'stats' ? styles.activeTab : ''}`}
         onClick={() => setActiveTab('stats')}
       >
         <PieChart size={18} />
         <span>Statistics</span>
-      </button>
+      </button> */}
       <button 
         className={`${styles.tabButton} ${activeTab === 'ranking' ? styles.activeTab : ''}`}
         onClick={() => setActiveTab('ranking')}

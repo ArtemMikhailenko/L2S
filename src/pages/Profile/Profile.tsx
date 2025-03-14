@@ -10,7 +10,7 @@ import { Trophy, Users } from "lucide-react";
 import ProfileHeader from '../../components/Profile/ProfileHeader/ProfileHeader';
 import LevelProgressBar from '../../components/Profile/LevelProgressBar/LevelProgressBar';
 import TabNavigation from '../../components/Profile/TabNavigation/TabNavigation';
-import StatsTab from '../../components/Profile/StatsTab/StatisticsTab';
+// import StatsTab from '../../components/Profile/StatsTab/StatisticsTab';
 import RankingTab from '../../components/Profile/RankingTab/RankingTab';
 import ReferralsTab from '../../components/Profile/ReferralsTab/ReferralsTab';
 import { Activity } from '../../components/Profile/ActivityItem/ActivityItem';
@@ -37,7 +37,7 @@ interface UserData {
 }
 
 function Profile() {
-  const [activeTab, setActiveTab] = useState<'stats' | 'ranking' | 'referrals'>('stats');
+  const [activeTab, setActiveTab] = useState<  'ranking' | 'referrals'>('ranking');
     //@ts-ignore
 
   const [tonConnectUI] = useTonConnectUI();
@@ -133,7 +133,7 @@ function Profile() {
 
       {/* Tab content */}
       <div className={styles.tabContent}>
-        {activeTab === 'stats' && (
+        {/* {activeTab === 'stats' && (
           <StatsTab 
             totalPoints={userData.totalPoints}
             totalQuizzes={userData.totalQuizzes}
@@ -141,7 +141,7 @@ function Profile() {
             activities={activities}
           />
         )}
-        
+         */}
         {activeTab === 'ranking' && (
           <RankingTab 
             currentUserTelegramId={telegramID}

@@ -9,7 +9,8 @@ function TonConnectPage() {
   const [tonConnectUI] = useTonConnectUI();
   const [isConnected, setIsConnected] = useState(false);
   const location = useLocation();
-  const [referrerCode, setReferrerCode] = useState<string | null>(null);
+  const [referrerCode, setReferrerCode] = useState(null);
+  const [animateElements, setAnimateElements] = useState(false);
 
   useEffect(() => {
     // Extract referral code from various possible sources
@@ -26,13 +27,14 @@ function TonConnectPage() {
       
       // Проверяем строку initData напрямую (может содержать start_param)
       const initData = WebApp.initData;
-        let initDataObj: Record<string, string> = {};
+        let initDataObj = {};
         try {
         if (initData) {
             const paramPairs = initData.split('&');
             paramPairs.forEach(pair => {
             const [key, value] = pair.split('=');
             if (key && value) {
+                //@ts-ignore
                 initDataObj[key] = decodeURIComponent(value);
             }
             });
@@ -58,9 +60,14 @@ function TonConnectPage() {
     };
     
     const code = extractReferralCode();
-    if (code) {
-      setReferrerCode(code);
+    if (code as any) {
+      setReferrerCode(code as any);
     }
+
+    // Запускаем анимации с небольшой задержкой
+    setTimeout(() => {
+      setAnimateElements(true);
+    }, 300);
   }, [location]);
 
   useEffect(() => {
@@ -124,58 +131,98 @@ function TonConnectPage() {
 
   return (
     <div className={styles.pageContainer}>
-      {/* Компонент без изменений */}
-      <div className={styles.quizElements}>
-        <div className={styles.quizElement}></div>
-        <div className={styles.quizElement}></div>
-        <div className={styles.quizElement}></div>
+      {/* Фоновые элементы */}
+      <div className={styles.bgElements}>
+        <div className={styles.bgCircle}></div>
+        <div className={styles.bgDiamond}></div>
+        <div className={styles.bgDot}></div>
+        <div className={styles.bgDot}></div>
+        <div className={styles.bgDot}></div>
       </div>
 
-      <div className={styles.container}>
-        <div className={styles.glowEffect}></div>
-        <div className={styles.quizGraphic}>?</div>
+      {/* Плавающие элементы квиза */}
+      <div className={styles.floatingElements}>
+        <div className={`${styles.floatingElement} ${styles.questionMark}`}>?</div>
+        <div className={`${styles.floatingElement} ${styles.exclamationMark}`}>!</div>
+        <div className={`${styles.floatingElement} ${styles.coinIcon}`}>
+          <div className={styles.coinInner}>TON</div>
+        </div>
+      </div>
 
-        <div className={styles.content}>
-          <div className={styles.logoArea}>
-            <span className={styles.logoIcon}>🧠</span>
-            <h1 className={styles.title}>TON Quiz</h1>
-          </div>
+      <div className={`${styles.container} ${animateElements ? styles.visible : ''}`}>
+        <div className={styles.headerDecoration}>
+          <div className={styles.decorLine}></div>
+          <div className={styles.decorDiamond}></div>
+          <div className={styles.decorLine}></div>
+        </div>
 
-          <h2 className={styles.subtitle}>Connect Your Wallet</h2>
-
-          <div className={styles.infoBox}>
-            <p className={styles.description}>
-              Connect your TON wallet to start the game, answer questions, and win crypto prizes.
-            </p>
-          </div>
-
-          <div className={styles.walletArea}>
-            <TonConnectButton className={styles.connectButton} />
-            <div className={styles.walletNote}>Supported: Tonkeeper, TonHub, and others</div>
-          </div>
-
-          {isConnected && (
-            <div className={styles.successMessage}>Wallet connected successfully!</div>
-          )}
-
-          <div className={styles.features}>
-            <div className={styles.featureItem}>
-              <div className={styles.featureIcon}>🎮</div>
-              <div className={styles.featureText}>Play</div>
+        <div className={styles.contentWrapper}>
+          {/* Шапка с логотипом */}
+          <div className={styles.logoContainer}>
+            <div className={styles.logoWrapper}>
+              <div className={styles.logoInner}>
+                <div className={styles.logoBrain}>
+                  <img src="/logo.png" alt="l2s" />
+                </div>
+              </div>
             </div>
-            <div className={styles.featureItem}>
-              <div className={styles.featureIcon}>🏆</div>
-              <div className={styles.featureText}>Win</div>
+            <h1 className={styles.title}>TON QUIZ</h1>
+            <div className={styles.tagline}>Challenge Your Knowledge</div>
+          </div>
+
+          <div className={styles.card}>
+            <h2 className={styles.subtitle}>Connect Your Wallet</h2>
+
+            <div className={styles.infoBox}>
+              <div className={styles.infoIcon}></div>
+              <p className={styles.description}>
+                Connect your TON wallet to play the quiz game and earn crypto rewards for your knowledge.
+              </p>
             </div>
-            <div className={styles.featureItem}>
-              <div className={styles.featureIcon}>💎</div>
-              <div className={styles.featureText}>Earn Prizes</div>
+
+            <div className={styles.walletArea}>
+              <TonConnectButton className={styles.connectButton} />
+              <div className={styles.supportedWallets}>
+                <span className={styles.walletIcon}></span>
+                <span className={styles.walletNote}>Tonkeeper, TonHub & others</span>
+              </div>
+            </div>
+
+            {isConnected && (
+              <div className={styles.successMessage}>
+                <div className={styles.checkmarkIcon}></div>
+                <div className={styles.messageText}>Wallet connected successfully!</div>
+              </div>
+            )}
+          </div>
+
+          {/* Секция преимуществ */}
+          <div className={styles.benefitsSection}>
+            <div className={styles.benefitItem}>
+              <div className={styles.benefitIconPlay}>
+                <img src="/question.svg" alt="" />
+              </div>
+              <div className={styles.benefitText}>Answer Questions</div>
+            </div>
+            <div className={styles.benefitItem}>
+              <div className={styles.benefitIconTrophy}>
+               <img src="/win.svg" alt="" />
+              </div>
+              <div className={styles.benefitText}>Win Contests</div>
+            </div>
+            <div className={styles.benefitItem}>
+              <div className={styles.benefitIconCoin}>
+                <img src="/token.svg" alt="" />
+              </div>
+              <div className={styles.benefitText}>Earn TON</div>
             </div>
           </div>
 
-          <div className={styles.quizSample}>
-            <div className={styles.sampleQuestion}>Ready to test your knowledge?</div>
-          </div>
+         
+        </div>
+
+        <div className={styles.footerDecoration}>
+          <div className={styles.footerLine}></div>
         </div>
       </div>
     </div>

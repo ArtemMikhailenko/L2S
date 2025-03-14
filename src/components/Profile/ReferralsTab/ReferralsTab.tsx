@@ -17,12 +17,15 @@ export interface ReferralInfo {
     referralInfo: ReferralInfo;
     rewardTiers: RewardTierInfo[];
   }
-  
+  function shortenLink(link: string, front = 5, back = 5): string {
+    if (link.length <= front + back) return link;
+    return `${link.slice(0, front)}...${link.slice(-back)}`;
+  }
   //@ts-ignore
   function ReferralsTab({ referralInfo, rewardTiers }: ReferralsTabProps) {
     // Function to copy referral code
     const copyReferralCode = () => {
-      navigator.clipboard.writeText(referralInfo.code);
+      navigator.clipboard.writeText(`https://t.me/L2Sbot_bot?startapp=${referralInfo.code}`);
       WebApp.showPopup({
         title: "Copied!",
         message: "Referral code copied to clipboard"
@@ -61,8 +64,8 @@ export interface ReferralInfo {
     <div className={styles.referralCode}>
       <h3 className={styles.sectionTitle}>Your Referral Code</h3>
       <div className={styles.codeContainer}>
-        <code className={styles.code}>{telegramBotLink}</code>
-        <button className={styles.copyButton} onClick={copyReferralCode}>
+      <code className={styles.code}>{shortenLink(telegramBotLink)}</code>
+      <button className={styles.copyButton} onClick={copyReferralCode}>
           Copy
         </button>
       </div>
@@ -75,7 +78,6 @@ export interface ReferralInfo {
       </button>
     </div>
       
-      {/* Если требуется дополнительный блок наград, раскомментируйте и доработайте его */}
       {/*
       <div className={styles.referralRewards}>
         <h3 className={styles.sectionTitle}>Rewards</h3>
