@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from "../../../pages/Profile/Profile.module.css";
 import RankingItem from '../RankingItem/RankingItem';
 import PrizeItem from '../PrizeItem/PrizeItem';
@@ -21,22 +22,23 @@ interface RankingTabProps {
 }
 
 const RankingTab: React.FC<RankingTabProps> = ({ currentUserTelegramId }) => {
+  const { t } = useTranslation();
   const [rankings, setRankings] = useState<Rank[]>([]);
   const [prizes, setPrizes] = useState<Prize[]>([]);
 
   useEffect(() => {
-    // Запрашиваем всех пользователей с бекенда
+    // Fetch all users from the backend
     fetch(`${import.meta.env.VITE_API_URL}/api/user`)
       .then((res) => res.json())
       .then((data) => {
-        // Предполагаем, что data — массив пользователей
-        // Сортируем по еженедельным очкам (weeklyPoints) в порядке убывания
+        // Assume data is an array of users
+        // Sort by weeklyPoints in descending order
         const sortedUsers = data.sort((a: any, b: any) => b.weeklyPoints - a.weeklyPoints);
         
-        // Преобразуем данные в массив Rank
+        // Convert data into an array of Rank objects
         const ranks: Rank[] = sortedUsers.map((user: any, index: number) => ({
           position: index + 1,
-          name: user.telegramName, // можно использовать user.firstName + " " + user.lastName, если есть
+          name: user.telegramName, // You may combine firstName and lastName if available
           points: user.weeklyPoints,
           isCurrentUser: user.telegramId === currentUserTelegramId,
         }));
@@ -44,18 +46,18 @@ const RankingTab: React.FC<RankingTabProps> = ({ currentUserTelegramId }) => {
       })
       .catch((err) => console.error("Error fetching ranking data:", err));
 
-    // Пример установки данных о призах (можно также получать с сервера)
+    // Set example prize data (you can also fetch this from the server)
     setPrizes([
-      { position: 1, name: 'First Place', value: '500 TON' },
-      { position: 2, name: 'Second Place', value: '250 TON' },
-      { position: 3, name: 'Third Place', value: '100 TON' }
+      { position: 1, name: t("firstPlace", "First Place"), value: "500 TON" },
+      { position: 2, name: t("secondPlace", "Second Place"), value: "250 TON" },
+      { position: 3, name: t("thirdPlace", "Third Place"), value: "100 TON" }
     ]);
-  }, [currentUserTelegramId]);
+  }, [currentUserTelegramId, t]);
 
   return (
     <div className={styles.rankingTab}>
       <div className={styles.rankingHeader}>
-        <h3 className={styles.sectionTitle}>Weekly Leaderboard</h3>
+        <h3 className={styles.sectionTitle}>{t("weeklyLeaderboard", "Weekly Leaderboard")}</h3>
       </div>
       
       <div className={styles.rankingList}>
@@ -65,7 +67,7 @@ const RankingTab: React.FC<RankingTabProps> = ({ currentUserTelegramId }) => {
       </div>
       
       <div className={styles.prizesInfo}>
-        <h3 className={styles.sectionTitle}>Weekly Prizes</h3>
+        <h3 className={styles.sectionTitle}>{t("weeklyPrizes", "Weekly Prizes")}</h3>
         <div className={styles.prizesList}>
           {prizes.map((prize) => (
             <PrizeItem key={prize.position} prize={prize} />

@@ -1,82 +1,85 @@
 import { Share2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import styles from "../../../pages/Profile/Profile.module.css";
 import WebApp from "@twa-dev/sdk";
 // import RewardTier from '../RewardTier/RewardTier';
+
 export interface ReferralInfo {
-    code: string;
-    referralsCount: number;
-    pointsEarned: number;
-  }
-  
-  export interface RewardTierInfo {
-    friendCount: number;
-    rewardAmount: number;
-  }
-  
-  interface ReferralsTabProps {
-    referralInfo: ReferralInfo;
-    rewardTiers: RewardTierInfo[];
-  }
-  function shortenLink(link: string, front = 5, back = 5): string {
-    if (link.length <= front + back) return link;
-    return `${link.slice(0, front)}...${link.slice(-back)}`;
-  }
-  //@ts-ignore
-  function ReferralsTab({ referralInfo, rewardTiers }: ReferralsTabProps) {
-    // Function to copy referral code
-    const copyReferralCode = () => {
-      navigator.clipboard.writeText(`https://t.me/L2Sbot_bot?startapp=${referralInfo.code}`);
-      WebApp.showPopup({
-        title: "Copied!",
-        message: "Referral code copied to clipboard"
-      });
-    };
-  
-    // Generate consistent referral links for both web and telegram bot
-    const shareReferralLink = () => {
-      // For Telegram Bot deep linking
-      const telegramBotLink = `https://t.me/L2Sbot_bot?startapp=${referralInfo.code}`;
-      
-      // For Web App direct link 
-      const webAppLink = `${window.location.origin}?ref=${referralInfo.code}`;
-      
-      WebApp.showPopup({
-        title: "Share your link",
-        message: `Share these links with friends:\n\nTelegram: ${telegramBotLink}\n\nWeb: ${webAppLink}`
-      });
-    };
+  code: string;
+  referralsCount: number;
+  pointsEarned: number;
+}
+
+export interface RewardTierInfo {
+  friendCount: number;
+  rewardAmount: number;
+}
+
+interface ReferralsTabProps {
+  referralInfo: ReferralInfo;
+  rewardTiers: RewardTierInfo[];
+}
+
+function shortenLink(link: string, front = 5, back = 5): string {
+  if (link.length <= front + back) return link;
+  return `${link.slice(0, front)}...${link.slice(-back)}`;
+}
+
+function ReferralsTab({ referralInfo, rewardTiers }: ReferralsTabProps) {
+  const { t } = useTranslation();
+
+  // Function to copy referral code
+  const copyReferralCode = () => {
+    const fullLink = `https://t.me/L2Sbot_bot?startapp=${referralInfo.code}`;
+    navigator.clipboard.writeText(fullLink);
+    WebApp.showPopup({
+      title: t("copied", "Copied!"),
+      message: t("referralCodeCopied", "Referral code copied to clipboard")
+    });
+  };
+
+  // Generate referral links for both web and Telegram bot
+  const shareReferralLink = () => {
     const telegramBotLink = `https://t.me/L2Sbot_bot?startapp=${referralInfo.code}`;
+    const webAppLink = `${window.location.origin}?ref=${referralInfo.code}`;
+    WebApp.showPopup({
+      title: t("shareYourLink", "Share your link"),
+      message: `${t("telegram", "Telegram")}: ${telegramBotLink}\n\n${t("web", "Web")}: ${webAppLink}`
+    });
+  };
+
+  const telegramBotLink = `https://t.me/L2Sbot_bot?startapp=${referralInfo.code}`;
 
   return (
     <div className={styles.referralsTab}>
-    <div className={styles.referralStatus}>
-      <div className={styles.referralCount}>
-        <div className={styles.referralCountValue}>{referralInfo.referralsCount}</div>
-        <div className={styles.referralCountLabel}>Friends Joined</div>
+      <div className={styles.referralStatus}>
+        <div className={styles.referralCount}>
+          <div className={styles.referralCountValue}>{referralInfo.referralsCount}</div>
+          <div className={styles.referralCountLabel}>{t("friendsJoined", "Friends Joined")}</div>
+        </div>
+        
+        <div className={styles.referralPoints}>
+          <div className={styles.referralPointsValue}>{referralInfo.pointsEarned}</div>
+          <div className={styles.referralPointsLabel}>{t("pointsEarned", "Points Earned")}</div>
+        </div>
       </div>
       
-      <div className={styles.referralPoints}>
-        <div className={styles.referralPointsValue}>{referralInfo.pointsEarned}</div>
-        <div className={styles.referralPointsLabel}>Points Earned</div>
+      <div className={styles.referralCode}>
+        <h3 className={styles.sectionTitle}>{t("yourReferralCode", "Your Referral Code")}</h3>
+        <div className={styles.codeContainer}>
+          <code className={styles.code}>{shortenLink(telegramBotLink)}</code>
+          <button className={styles.copyButton} onClick={copyReferralCode}>
+            {t("copied", "Copied!")}
+          </button>
+        </div>
       </div>
-    </div>
-    
-    <div className={styles.referralCode}>
-      <h3 className={styles.sectionTitle}>Your Referral Code</h3>
-      <div className={styles.codeContainer}>
-      <code className={styles.code}>{shortenLink(telegramBotLink)}</code>
-      <button className={styles.copyButton} onClick={copyReferralCode}>
-          Copy
+      
+      <div className={styles.shareReferral}>
+        <button className={styles.shareButton} onClick={shareReferralLink}>
+          <Share2 size={18} />
+          <span>{t("shareWithFriends", "Share with Friends")}</span>
         </button>
       </div>
-    </div>
-    
-    <div className={styles.shareReferral}>
-      <button className={styles.shareButton} onClick={shareReferralLink}>
-        <Share2 size={18} />
-        <span>Share with Friends</span>
-      </button>
-    </div>
       
       {/*
       <div className={styles.referralRewards}>

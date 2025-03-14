@@ -33,7 +33,23 @@ const resources = {
       points: "points",
       levelText: "Level {{level}}",
       pointsToNextLevel: "{{points}} / 500 points to next level",
-       telegramID: "Telegram ID"
+       telegramID: "Telegram ID",
+        rankings: "Rankings",
+      referrals: "Referrals",
+      weeklyLeaderboard: "Weekly Leaderboard",
+      weeklyPrizes: "Weekly Prizes",
+      firstPlace: "First Place",
+      secondPlace: "Second Place",
+      thirdPlace: "Third Place",
+      yourReferralCode: "Your Referral Code",
+      friendsJoined: "Friends Joined",
+      pointsEarned: "Points Earned",
+      copied: "Copied!",
+      referralCodeCopied: "Referral code copied to clipboard",
+      shareYourLink: "Share your link",
+      telegram: "Telegram",
+      web: "Web",
+      shareWithFriends: "Share with Friends"
     }
   },
   ar: {
@@ -66,8 +82,23 @@ const resources = {
        points: "نقاط",
     levelText: "المستوى {{level}}",
     pointsToNextLevel: "{{points}} / 500 نقطة للوصول إلى المستوى التالي",
-    telegramID: "معرّف تلغرام"
-
+    telegramID: "معرّف تلغرام",
+     rankings: "الترتيب",
+      referrals: "الإحالات",
+      weeklyLeaderboard: "الترتيب الأسبوعي",
+      weeklyPrizes: "الجوائز الأسبوعية",
+      firstPlace: "المركز الأول",
+      secondPlace: "المركز الثاني",
+      thirdPlace: "المركز الثالث",
+      yourReferralCode: "رمز الإحالة الخاص بك",
+      friendsJoined: "الأصدقاء الملتحقون",
+      pointsEarned: "النقاط المكتسبة",
+      copied: "تم النسخ!",
+      referralCodeCopied: "تم نسخ رمز الإحالة إلى الحافظة",
+      shareYourLink: "شارك رابطك",
+      telegram: "تليجرام",
+      web: "ويب",
+      shareWithFriends: "شارك مع الأصدقاء"
 
     }
   }
