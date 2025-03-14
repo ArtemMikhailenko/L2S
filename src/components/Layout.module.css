@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    width: 100vw;
     background: #f9f9f9;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
@@ -19,7 +20,7 @@
     color: #d9d9d9; /* Light grey text */
     text-decoration: none;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 0.8rem;
     transition: color 0.3s ease, transform 0.3s ease;
     cursor: pointer;
   }
