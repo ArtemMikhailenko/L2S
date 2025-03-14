@@ -1,4 +1,6 @@
+"use client";
 import { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './Quiz.module.css';
 import WebApp from '@twa-dev/sdk';
 import QuizResult from '../../components/QuizResult/QuizResult';
@@ -19,17 +21,18 @@ declare global {
 function showRewardedAd() {
   if (typeof window.show_9078748 === 'function') {
     return window.show_9078748().then(() => {
-      console.log('Пользователь досмотрел рекламу');
+      console.log('User watched the ad');
     }).catch(err => {
-      console.error('Ошибка при показе рекламы:', err);
+      console.error('Error showing ad:', err);
     });
   } else {
-    console.warn('show_9078748 не определён. Проверьте, подключён ли скрипт.');
+    console.warn('show_9078748 is not defined. Check if the script is loaded.');
     return Promise.resolve();
   }
 }
 
 const Quiz: React.FC = () => {
+  const { t } = useTranslation();
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [quizQuestions, setQuizQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -51,7 +54,7 @@ const Quiz: React.FC = () => {
     
     setSelectedAnswer(selected);
     const isCorrect = selected === currentQuestion.correctAnswer;
-    setFeedback(isCorrect ? 'Correct!' : 'Wrong!');
+    setFeedback(isCorrect ? t("correct") : t("wrong"));
     
     if (isCorrect) {
       setScore(prev => prev + 1);
@@ -81,26 +84,25 @@ const Quiz: React.FC = () => {
       setLoading(true);
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/quiz/questions?limit=100`);
       if (!response.ok) {
-        throw new Error('Failed to fetch questions');
+        throw new Error(t("errorFetchingQuestions"));
       }
       const data = await response.json();
-      // Извлекаем массив вопросов из объекта ответа
+      // Assuming the response object has a "questions" array
       const questionsArray = data.questions;
       setAllQuestions(questionsArray);
   
-      // Выбираем 15 случайных вопросов
+      // Select 15 random questions
       const shuffled = [...questionsArray].sort(() => 0.5 - Math.random());
       const selected = shuffled.slice(0, 15);
       setQuizQuestions(selected);
   
       setTimerActive(true);
       setLoading(false);
-    } catch (err:any) {
+    } catch (err: any) {
       setError(err.message);
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     fetchQuestions();
@@ -110,7 +112,7 @@ const Quiz: React.FC = () => {
     if (currentQuestionIndex !== 0 && currentQuestionIndex % 5 === 0 && !quizCompleted) {
       showRewardedAd();
     }
-  }, [currentQuestionIndex]);
+  }, [currentQuestionIndex, quizCompleted]);
 
   useEffect(() => {
     let timer: number | undefined;
@@ -130,7 +132,7 @@ const Quiz: React.FC = () => {
   }, [timeLeft, timerActive, currentQuestion]);
 
   const handleTimeUp = () => {
-    setFeedback('Time Up!');
+    setFeedback(t("timeUp"));
     setSelectedAnswer(null);
     setTimerActive(false);
   };
@@ -182,7 +184,7 @@ const Quiz: React.FC = () => {
     return (
       <div className={styles.loaderContainer}>
         <div className={styles.loader}></div>
-        <p>Loading questions...</p>
+        <p>{t("loadingQuestions")}</p>
       </div>
     );
   }
@@ -192,9 +194,9 @@ const Quiz: React.FC = () => {
     return (
       <div className={styles.errorContainer}>
         <div className={styles.errorIcon}>❌</div>
-        <h3>Something went wrong</h3>
+        <h3>{t("errorSomethingWentWrong")}</h3>
         <p className={styles.error}>{error}</p>
-        <button className={styles.retryButton} onClick={fetchQuestions}>Try Again</button>
+        <button className={styles.retryButton} onClick={fetchQuestions}>{t("tryAgain")}</button>
       </div>
     );
   }
@@ -204,8 +206,8 @@ const Quiz: React.FC = () => {
     return (
       <div className={styles.errorContainer}>
         <div className={styles.errorIcon}>📋</div>
-        <h3>No questions available</h3>
-        <p>Please check back later or contact support.</p>
+        <h3>{t("noQuestions")}</h3>
+        <p>{t("pleaseContactSupport")}</p>
       </div>
     );
   }
@@ -230,17 +232,17 @@ const Quiz: React.FC = () => {
       <div className={styles.quizHeader}>
         <div className={styles.scoreBoard}>
           <div className={styles.scoreItem}>
-            <span className={styles.scoreLabel}>Score</span>
+            <span className={styles.scoreLabel}>{t("score")}</span>
             <span className={styles.scoreValue}>{score}</span>
           </div>
           <div className={styles.scoreItem}>
-            <span className={styles.scoreLabel}>Question</span>
+            <span className={styles.scoreLabel}>{t("question")}</span>
             <span className={styles.scoreValue}>{currentQuestionIndex + 1}/{quizQuestions.length}</span>
           </div>
         </div>
         
         <div className={styles.timerContainer}>
-          <div className={styles.timerLabel}>Time Left</div>
+          <div className={styles.timerLabel}>{t("timeLeft")}</div>
           <div className={styles.timerValue} style={{ color: timeLeft < 10 ? '#FF5252' : '#801a3d' }}>
             {timeLeft}s
           </div>
@@ -289,21 +291,16 @@ const Quiz: React.FC = () => {
       
       {feedback && (
         <div className={`${styles.feedbackContainer} ${
-          feedback === 'Correct!' 
+          feedback === t("correct") 
             ? styles.correctFeedback 
-            : feedback === 'Time Up!' 
+            : feedback === t("timeUp") 
             ? styles.timeUpFeedback 
             : styles.wrongFeedback
         }`}>
           <div className={styles.feedbackIcon}>
-            {feedback === 'Correct!' ? '✓' : feedback === 'Time Up!' ? '⏱' : '✗'}
+            {feedback === t("correct") ? '✓' : feedback === t("timeUp") ? '⏱' : '✗'}
           </div>
           <div className={styles.feedbackText}>{feedback}</div>
-          {feedback !== 'Correct!' && currentQuestion && (
-            <div className={styles.correctAnswerText}>
-             
-            </div>
-          )}
         </div>
       )}
       
@@ -312,7 +309,7 @@ const Quiz: React.FC = () => {
           className={styles.nextButton} 
           onClick={handleNextQuestion}
         >
-          {currentQuestionIndex + 1 === quizQuestions.length ? 'See Results' : 'Next Question'}
+          {currentQuestionIndex + 1 === quizQuestions.length ? t("seeResults") : t("nextQuestion")}
           <span className={styles.nextIcon}>→</span>
         </button>
       )}
