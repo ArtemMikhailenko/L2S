@@ -1,24 +1,32 @@
-// src/components/Layout.tsx
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link } from 'react-router-dom';
+import { useTonConnectUI } from '@tonconnect/ui-react';
+import styles from './Layout.module.css';
 
 function Layout() {
+  const [tonConnectUI] = useTonConnectUI();
+  const isConnected = !!tonConnectUI.wallet;
+
   return (
-    <div>
-      <nav style={{ padding: '1rem', borderBottom: '1px solid #ccc' }}>
-        <Link to="/">TON Connect</Link> |{' '}
-        <Link to="/quiz">Квиз</Link> |{' '}
-        <Link to="/profile">Профиль</Link>
+    <div className={styles.layout}>
+      <nav className={styles.nav}>
+        <Link to="/" className={styles.navLink}>TON Connect</Link>
+        {isConnected ? (
+          <>
+            <Link to="/quiz" className={styles.navLink}>Quiz</Link>
+            <Link to="/profile" className={styles.navLink}>Profile</Link>
+          </>
+        ) : (
+          <>
+            <span className={styles.navLinkDisabled}>Quiz</span>
+            <span className={styles.navLinkDisabled}>Profile</span>
+          </>
+        )}
       </nav>
-      <main style={{ padding: '1rem' }}>
-        {/* 
-          Здесь будут рендериться дочерние роуты
-          (TonConnect, Quiz, Profile), 
-          в зависимости от URL
-        */}
+      <main className={styles.main}>
         <Outlet />
       </main>
     </div>
-  )
+  );
 }
 
-export default Layout
+export default Layout;
