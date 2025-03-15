@@ -23,19 +23,19 @@ interface RankingTabProps {
 
 const RankingTab: React.FC<RankingTabProps> = ({ currentUserTelegramId }) => {
   const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<'weekly' | 'all'>('weekly');
   const [weeklyRankings, setWeeklyRankings] = useState<Rank[]>([]);
   const [allTimeRankings, setAllTimeRankings] = useState<Rank[]>([]);
   const [prizes, setPrizes] = useState<Prize[]>([]);
-  const [activeTab, setActiveTab] = useState<"weekly" | "allTime">("weekly");
 
   useEffect(() => {
-    // Получаем всех пользователей
+    // Fetch all users from the backend
     fetch(`${import.meta.env.VITE_API_URL}/api/user`)
       .then((res) => res.json())
       .then((data) => {
-        // Еженедельный лидерборд: сортировка по weeklyPoints по убыванию
-        const weeklySorted = [...data].sort((a: any, b: any) => b.weeklyPoints - a.weeklyPoints);
-        const weeklyRanks: Rank[] = weeklySorted.map((user: any, index: number) => ({
+        // Weekly leaderboard - sort by weeklyPoints
+        const weeklyUsers = [...data].sort((a: any, b: any) => b.weeklyPoints - a.weeklyPoints);
+        const weeklyRanks: Rank[] = weeklyUsers.map((user: any, index: number) => ({
           position: index + 1,
           name: user.telegramName,
           points: user.weeklyPoints,
@@ -43,21 +43,24 @@ const RankingTab: React.FC<RankingTabProps> = ({ currentUserTelegramId }) => {
         }));
         setWeeklyRankings(weeklyRanks);
 
-        // Общий лидерборд: сортировка по (totalPoints + referralPoints)
-        const allTimeSorted = [...data].sort((a: any, b: any) => 
-          (b.totalPoints + b.referralPoints) - (a.totalPoints + a.referralPoints)
-        );
-        const allTimeRanks: Rank[] = allTimeSorted.map((user: any, index: number) => ({
+        // All-time leaderboard - calculate totalPoints (referralPoints + other points)
+        const allTimeUsers = [...data].sort((a: any, b: any) => {
+          const totalPointsA = (a.referralPoints || 0) + (a.totalPoints || 0);
+          const totalPointsB = (b.referralPoints || 0) + (b.totalPoints || 0);
+          return totalPointsB - totalPointsA;
+        });
+        
+        const allTimeRanks: Rank[] = allTimeUsers.map((user: any, index: number) => ({
           position: index + 1,
           name: user.telegramName,
-          points: user.totalPoints + user.referralPoints,
+          points: (user.referralPoints || 0) + (user.totalPoints || 0),
           isCurrentUser: user.telegramId === currentUserTelegramId,
         }));
         setAllTimeRankings(allTimeRanks);
       })
       .catch((err) => console.error("Error fetching ranking data:", err));
 
-    // Пример призовых мест (можно заменить или получать с сервера)
+    // Set example prize data (you can also fetch this from the server)
     setPrizes([
       { position: 1, name: t("firstPlace", "First Place"), value: "500 TON" },
       { position: 2, name: t("secondPlace", "Second Place"), value: "250 TON" },
@@ -68,24 +71,25 @@ const RankingTab: React.FC<RankingTabProps> = ({ currentUserTelegramId }) => {
   return (
     <div className={styles.rankingTab}>
       <div className={styles.tabButtons}>
-        <button
-          className={activeTab === "weekly" ? styles.activeTab : ""}
-          onClick={() => setActiveTab("weekly")}
+        <button 
+          className={`${styles.tabButton} ${activeTab === 'weekly' ? styles.activeTab : ''}`}
+          onClick={() => setActiveTab('weekly')}
         >
           {t("weeklyLeaderboard", "Weekly Leaderboard")}
         </button>
-        <button
-          className={activeTab === "allTime" ? styles.activeTab : ""}
-          onClick={() => setActiveTab("allTime")}
+        <button 
+          className={`${styles.tabButton} ${activeTab === 'all' ? styles.activeTab : ''}`}
+          onClick={() => setActiveTab('all')}
         >
           {t("allTimeLeaderboard", "All-Time Leaderboard")}
         </button>
       </div>
 
-      {activeTab === "weekly" && (
+      {activeTab === 'weekly' && (
         <>
           <div className={styles.rankingHeader}>
             <h3 className={styles.sectionTitle}>{t("weeklyLeaderboard", "Weekly Leaderboard")}</h3>
+            <span className={styles.pointsInfo}>{t("weeklyPointsInfo", "Based on weekly activity")}</span>
           </div>
           <div className={styles.rankingList}>
             {weeklyRankings.map((rank) => (
@@ -103,10 +107,11 @@ const RankingTab: React.FC<RankingTabProps> = ({ currentUserTelegramId }) => {
         </>
       )}
 
-      {activeTab === "allTime" && (
+      {activeTab === 'all' && (
         <>
           <div className={styles.rankingHeader}>
             <h3 className={styles.sectionTitle}>{t("allTimeLeaderboard", "All-Time Leaderboard")}</h3>
+            <span className={styles.pointsInfo}>{t("allTimePointsInfo", "Referral points + total activity points")}</span>
           </div>
           <div className={styles.rankingList}>
             {allTimeRankings.map((rank) => (

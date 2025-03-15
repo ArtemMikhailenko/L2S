@@ -49,7 +49,10 @@ const resources = {
       shareYourLink: "Share your link",
       telegram: "Telegram",
       web: "Web",
-      shareWithFriends: "Share with Friends"
+      shareWithFriends: "Share with Friends",
+      subscriptionExpired: "Access expired. To extend your subscription, please pay 0.05 TON.",
+      extendSubscription: "Pay and Extend Subscription",
+      accessActiveUntil: "Access active until:",
     }
   },
   ar: {
@@ -98,7 +101,10 @@ const resources = {
       shareYourLink: "شارك رابطك",
       telegram: "تليجرام",
       web: "ويب",
-      shareWithFriends: "شارك مع الأصدقاء"
+      shareWithFriends: "شارك مع الأصدقاء",
+      subscriptionExpired: "انتهت صلاحية الوصول. لتمديد اشتراكك، يرجى دفع 0.05 TON.",
+      extendSubscription: "ادفع وامدد الاشتراك",
+      accessActiveUntil: "الوصول نشط حتى:",
 
     }
   }

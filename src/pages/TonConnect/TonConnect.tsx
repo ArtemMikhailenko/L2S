@@ -268,17 +268,20 @@ function TonConnectPage() {
             {/* Статус доступа и кнопка оплаты */}
             {isConnected && (
               <div style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #ccc" }}>
-                {isAccessExpired() ? (
-                  <>
-                    <p>Время доступа истекло. Для продления требуется оплата 0.05 TON.</p>
-                    <button onClick={handlePayment}>Оплатить и продлить подписку</button>
-                  </>
-                ) : (
-                  <p>
-                    Доступ активен до:{" "}
-                    {new Date(accessUntil as any).toLocaleString()}
+               {isAccessExpired() ? (
+                <>
+                  <p className={styles.subscriptionText}>
+                    {t("subscriptionExpired", "Access expired. To extend your subscription, please pay 0.05 TON.")}
                   </p>
-                )}
+                  <button className={styles.extendButton} onClick={handlePayment}>
+                    {t("extendSubscription", "Pay and Extend Subscription")}
+                  </button>
+                </>
+              ) : (
+                <p className={styles.subscriptionText}>
+                  {t("accessActiveUntil", "Access active until:")} {new Date(accessUntil as any).toLocaleString()}
+                </p>
+              )}
               </div>
             )}
           </div>
