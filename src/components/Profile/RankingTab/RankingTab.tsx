@@ -89,7 +89,6 @@ const RankingTab: React.FC<RankingTabProps> = ({ currentUserTelegramId }) => {
         <>
           <div className={styles.rankingHeader}>
             <h3 className={styles.sectionTitle}>{t("weeklyLeaderboard", "Weekly Leaderboard")}</h3>
-            <span className={styles.pointsInfo}>{t("weeklyPointsInfo", "Based on weekly activity")}</span>
           </div>
           <div className={styles.rankingList}>
             {weeklyRankings.map((rank) => (
@@ -111,7 +110,6 @@ const RankingTab: React.FC<RankingTabProps> = ({ currentUserTelegramId }) => {
         <>
           <div className={styles.rankingHeader}>
             <h3 className={styles.sectionTitle}>{t("allTimeLeaderboard", "All-Time Leaderboard")}</h3>
-            <span className={styles.pointsInfo}>{t("allTimePointsInfo", "Referral points + total activity points")}</span>
           </div>
           <div className={styles.rankingList}>
             {allTimeRankings.map((rank) => (
