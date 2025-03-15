@@ -37,6 +37,7 @@ const Quiz: React.FC = () => {
   const [quizQuestions, setQuizQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [feedback, setFeedback] = useState<string | null>(null);
+  //@ts-ignore
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -224,8 +225,7 @@ const Quiz: React.FC = () => {
     );
   }
 
-  // Calculate progress
-  const progressPercentage = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
+  // const progressPercentage = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
 
   return (
     <div className={styles.quizContainer}>
