@@ -28,7 +28,7 @@ function Layout() {
       setIsConnected(true);
       // Fetch user data using telegramId
      
-      if (telegramId) {
+      if (tonConnectUI) {
         fetch(`${import.meta.env.VITE_API_URL}/api/user/telegram/${telegramId}`)
           .then(res => res.json())
           .then((data: UserData) => {
@@ -54,7 +54,7 @@ function Layout() {
     });
     
     return () => unsubscribe();
-  }, [tonConnectUI,telegramId]);
+  }, [tonConnectUI]);
 
   return (
     <div className={styles.layout}>
