@@ -22,12 +22,12 @@ function Layout() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [accessAllowed, setAccessAllowed] = useState(false);
   const { t } = useTranslation();
-
+  const telegramId = WebApp?.initDataUnsafe?.user?.id;
   useEffect(() => {
     if (tonConnectUI.wallet?.account?.address) {
       setIsConnected(true);
       // Fetch user data using telegramId
-      const telegramId = WebApp?.initDataUnsafe?.user?.id;
+     
       if (telegramId) {
         fetch(`${import.meta.env.VITE_API_URL}/api/user/telegram/${telegramId}`)
           .then(res => res.json())
@@ -54,7 +54,7 @@ function Layout() {
     });
     
     return () => unsubscribe();
-  }, [tonConnectUI]);
+  }, [tonConnectUI,telegramId]);
 
   return (
     <div className={styles.layout}>
