@@ -53,6 +53,7 @@ const resources = {
       subscriptionExpired: "Access expired. To extend your subscription, please pay 0.05 TON.",
       extendSubscription: "Pay and Extend Subscription",
       accessActiveUntil: "Access active until:",
+      allTimeLeaderboard: "All-Time Leaderboard"
     }
   },
   ar: {
@@ -83,9 +84,9 @@ const resources = {
       noQuestions: "لا توجد أسئلة متاحة",
       pleaseContactSupport: "يرجى المحاولة لاحقًا أو الاتصال بالدعم.",
        points: "نقاط",
-    levelText: "المستوى {{level}}",
-    pointsToNextLevel: "{{points}} / 500 نقطة للوصول إلى المستوى التالي",
-    telegramID: "معرّف تلغرام",
+      levelText: "المستوى {{level}}",
+      pointsToNextLevel: "{{points}} / 500 نقطة للوصول إلى المستوى التالي",
+      telegramID: "معرّف تلغرام",
      rankings: "الترتيب",
       referrals: "الإحالات",
       weeklyLeaderboard: "الترتيب الأسبوعي",
@@ -105,6 +106,8 @@ const resources = {
       subscriptionExpired: "انتهت صلاحية الوصول. لتمديد اشتراكك، يرجى دفع 0.05 TON.",
       extendSubscription: "ادفع وامدد الاشتراك",
       accessActiveUntil: "الوصول نشط حتى:",
+      allTimeLeaderboard: "لوحة المتصدرين لكل الأوقات"
+
 
     }
   }
