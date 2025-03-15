@@ -29,7 +29,11 @@
     color: #d4af37; /* Gold on hover */
     transform: translateY(-2px);
   }
-  
+  .subscriptionNotice {
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: #f44336;
+  }
   .navLinkDisabled {
     color: #b0b0b0; /* Slightly darker grey to indicate disabled state */
     font-weight: 600;

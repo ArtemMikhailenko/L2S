@@ -1,24 +1,54 @@
+"use client";
 import { Outlet, Link } from 'react-router-dom';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { useEffect, useState } from 'react';
 import styles from './Layout.module.css';
 import LanguageSwitcher from './LanguageSwitcher/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
+import WebApp from '@twa-dev/sdk';
+
+interface UserData {
+  telegramId: number;
+  createdAt: string;
+  accessUntil: string;
+  // ... other fields as needed
+}
 
 function Layout() {
   const [tonConnectUI] = useTonConnectUI();
+  //@ts-ignore
   const [isConnected, setIsConnected] = useState(false);
+  //@ts-ignore
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [accessAllowed, setAccessAllowed] = useState(false);
   const { t } = useTranslation();
 
-  // При изменении статуса кошелька обновляем состояние
   useEffect(() => {
-    // Если кошелек уже подключен при монтировании
     if (tonConnectUI.wallet?.account?.address) {
       setIsConnected(true);
+      // Fetch user data using telegramId
+      const telegramId = Number(WebApp?.initDataUnsafe?.user?.id);
+      if (telegramId) {
+        fetch(`${import.meta.env.VITE_API_URL}/api/user/telegram/${telegramId}`)
+          .then(res => res.json())
+          .then((data: UserData) => {
+            setUserData(data);
+            // Check access: allow if current time is before accessUntil
+            const accessUntil = new Date(data.accessUntil);
+            if (new Date() < accessUntil) {
+              setAccessAllowed(true);
+            } else {
+              setAccessAllowed(false);
+            }
+          })
+          .catch(err => console.error("Error fetching user data:", err));
+      }
+    } else {
+      setIsConnected(false);
+      setAccessAllowed(false);
     }
     
-    // Подписываемся на изменения статуса кошелька
-    const unsubscribe = tonConnectUI.onStatusChange((wallet) => {
+    const unsubscribe = tonConnectUI.onStatusChange(wallet => {
       setIsConnected(!!wallet?.account?.address);
     });
     
@@ -29,7 +59,7 @@ function Layout() {
     <div className={styles.layout}>
       <nav className={styles.nav}>
         <Link to="/" className={styles.navLink}>TON Connect</Link>
-        {isConnected ? (
+        {accessAllowed ? (
           <>
             <Link to="/quiz" className={styles.navLink}>{t('quiz')}</Link>
             <Link to="/profile" className={styles.navLink}>{t('profile')}</Link>
@@ -38,6 +68,9 @@ function Layout() {
           <>
             <span className={styles.navLinkDisabled}>{t('quiz')}</span>
             <span className={styles.navLinkDisabled}>{t('profile')}</span>
+            <span className={styles.subscriptionNotice}>
+              {t("accessExpired", "Access expired. Please pay 0.05 TON to continue.")}
+            </span>
           </>
         )}
          <LanguageSwitcher />

@@ -109,7 +109,7 @@ const Quiz: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (currentQuestionIndex !== 0 && currentQuestionIndex % 5 === 0 && !quizCompleted) {
+    if (currentQuestionIndex !== 0 && (currentQuestionIndex + 1) % 5 === 0 && !quizCompleted) {
       showRewardedAd();
     }
   }, [currentQuestionIndex, quizCompleted]);

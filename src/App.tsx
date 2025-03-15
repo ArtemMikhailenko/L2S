@@ -14,19 +14,13 @@ function App() {
         Можно обернуть <Routes> в <Layout>, либо использовать Nested Routes 
       */}
       <Route path="/" element={<Layout />}>
-        {/* Главная страница (TON Connect) */}
         <Route index element={<TonConnect />} />
         
-        {/* Квиз */}
         <Route path="quiz" element={<Quiz />} />
         
-        {/* Профиль */}
         <Route path="profile" element={<Profile />} />
         
-        {/* 
-          Маршрут "звездочка" для несуществующих страниц
-          можно добавить, чтобы показывать 404 
-        */}
+   
         <Route path="*" element={<div>Страница не найдена</div>} />
       </Route>
     </Routes>

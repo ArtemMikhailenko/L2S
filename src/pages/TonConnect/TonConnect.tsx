@@ -62,7 +62,6 @@ function TonConnectPage() {
       setReferrerCode(code as any);
     }
 
-    // Запускаем анимации с небольшой задержкой
     setTimeout(() => {
       setAnimateElements(true);
     }, 300);

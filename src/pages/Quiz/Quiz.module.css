@@ -135,7 +135,6 @@
     transition: width 1s linear;
   }
   
-  /* Индикатор общего прогресса (сколько вопросов пройдено) */
   .progressBar {
     height: 8px;
     background-color: rgba(255, 255, 255, 0.5);
@@ -145,12 +144,10 @@
   }
   .progressBarFill {
     height: 100%;
-    /* Плавный переход из золотого в бордовый */
     background: linear-gradient(90deg, #d4af37 0%, #801a3d 100%);
     transition: width 0.5s ease-out;
   }
   
-  /* Карточка вопроса */
   .questionCard {
     background-color: white;
     border-radius: 12px;
@@ -177,7 +174,6 @@
     padding-left: 16px;
   }
   
-  /* Вертикальный маркер слева от текста вопроса */
   .questionText::before {
     content: "";
     position: absolute;
@@ -189,7 +185,6 @@
     border-radius: 2px;
   }
   
-  /* Блок вариантов ответа */
   .optionsContainer {
     display: grid;
     grid-template-columns: 1fr;
@@ -209,7 +204,6 @@
     align-items: center;
   }
   
-  /* Ховер-эффект для вариантов ответа */
   .optionButton:hover:not(:disabled) {
     background-color: #efefef;
     border-color: #d4af37;
@@ -220,7 +214,6 @@
     transform: translateY(0);
   }
   
-  /* Буква (A, B, C, D...) */
   .optionIndex {
     display: flex;
     align-items: center;
@@ -239,7 +232,6 @@
     color: black;
   }
   
-  /* Правильный и неправильный варианты */
   .correctOption {
     background-color: rgba(76, 175, 80, 0.1) !important;
     border-color: #4CAF50 !important;
@@ -255,7 +247,6 @@
     background-color: #F44336;
   }
   
-  /* Блок фидбека */
   .feedbackContainer {
     background-color: white;
     border-radius: 12px;
@@ -379,7 +370,6 @@
     font-size: 18px;
   }
   
-  /* Блок загрузки (spinner) */
   .loaderContainer {
     display: flex;
     flex-direction: column;
@@ -405,7 +395,6 @@
     }
   }
   
-  /* Блок ошибок */
   .errorContainer {
     display: flex;
     flex-direction: column;
@@ -439,7 +428,6 @@
     background-color: #9c254b;
   }
   
-  /* Адаптивность */
   @media screen and (min-width: 768px) {
     .optionsContainer {
       grid-template-columns: 1fr 1fr;

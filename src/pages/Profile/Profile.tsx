@@ -79,7 +79,6 @@ function Profile() {
     fetchUserData();
   }, []);
 
-  // Пока данные не получены, показываем загрузку
   if (!userData) {
     return (
       <div className={styles.profileContainer}>
@@ -92,8 +91,6 @@ function Profile() {
     <div className={styles.profileContainer}>
       {/* Header with user info */}
       <ProfileHeader 
-        // Если компонента ProfileHeader теперь берет данные из WebApp и TON Connect, 
-        // можно оставить пустыми или убрать props
       />
 
       {/* Level progress bar */}
