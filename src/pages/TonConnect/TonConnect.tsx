@@ -134,16 +134,16 @@ function TonConnectPage() {
 
   // Функция продления доступа (обращается к серверному эндпоинту)
   const extendAccess = async () => {
-    const walletAddress = tonConnectUI.wallet?.account.address;
-    if (!walletAddress) {
-      console.error("Wallet address is missing.");
+    const telegramId = WebApp.initDataUnsafe?.user?.id;
+    if (!telegramId) {
+      console.error("telegramId is missing.");
       return;
     }
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/payment/extend-access`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ walletAddress }),
+        body: JSON.stringify({ telegramId }),
       });
 
       if (!response.ok) {
