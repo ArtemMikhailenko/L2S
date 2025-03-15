@@ -180,6 +180,9 @@ const Quiz: React.FC = () => {
     return arr.sort(() => Math.random() - 0.5);
   }, [currentQuestion]);
 
+  // Calculate timer percentage for the progress bar
+  const timerPercentage = (timeLeft / 30) * 100;
+
   // Show loading state
   if (loading) {
     return (
@@ -225,87 +228,97 @@ const Quiz: React.FC = () => {
     );
   }
 
-  // const progressPercentage = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
-
   return (
     <div className={styles.quizContainer}>
-    <div className={styles.userInfo}>
-      <div className={styles.userName}>
-        {WebApp.initDataUnsafe?.user?.first_name || "User"}
-      </div>
-      <div className={styles.userDate}>
-        {new Date().toLocaleDateString()}
-      </div>
-      <div className={styles.userTime}>
-        {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-      </div>
-    </div>
-
-    <div className={styles.summaryCard}>
-      <div className={styles.stats}>
-        <div className={styles.statItem}>
-          <div className={styles.statLabel}>{score} Correct Answers</div>
-          <div className={styles.statLabel}>{currentQuestionIndex - score} Incorrect Answers</div>
+      <div className={styles.userInfo}>
+        <div className={styles.userName}>
+          {WebApp.initDataUnsafe?.user?.first_name || "User"}
         </div>
-        
-        <div className={styles.progressCircle}>
-          <div className={styles.progressText}>
-            {currentQuestionIndex + 1}/{quizQuestions.length}
+        <div className={styles.userDate}>
+          {new Date().toLocaleDateString()}
+        </div>
+        <div className={styles.userTime}>
+          {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </div>
+      </div>
+
+      <div className={styles.summaryCard}>
+        <div className={styles.stats}>
+          <div className={styles.statItem}>
+            <div className={styles.statLabel}>{score} Correct Answers</div>
+            <div className={styles.statLabel}>{currentQuestionIndex - score} Incorrect Answers</div>
+          </div>
+          
+          <div className={styles.progressCircle}>
+            <div className={styles.progressText}>
+              {currentQuestionIndex + 1}/{quizQuestions.length}
+            </div>
+          </div>
+          
+          <div className={styles.pointsContainer}>
+            <div className={styles.pointsLabel}>Today's Points</div>
+            <div className={styles.pointsValue}>{score * 10}.0 points</div>
           </div>
         </div>
-        
-        <div className={styles.pointsContainer}>
-          <div className={styles.pointsLabel}>Today's Points</div>
-          <div className={styles.pointsValue}>{score * 10}.0 points</div>
-        </div>
-      </div>
-    </div>
-    
-    <div className={styles.questionCard}>
-      <div className={styles.questionHeader}>
-        Question {currentQuestionIndex + 1}: {currentQuestion.question}
       </div>
 
-      <div className={styles.chooseText}>Choose the correct answer:</div>
-      
-      <div className={styles.optionsContainer}>
-        {options.map((option, index) => (
-          <button
-            key={index}
-            className={styles.optionButton}
-            onClick={() => handleAnswer(option)}
-            disabled={feedback !== null}
-          >
-            <div className={styles.optionCircle}>
-              {String.fromCharCode(65 + index)}
-            </div>
-            <div className={styles.optionText}>{option}</div>
-          </button>
-        ))}
-      </div>
-    </div>
-    
-    {feedback && (
-      <div className={`${styles.feedbackContainer} ${
-        feedback === t("correct") 
-          ? styles.correctFeedback 
-          : styles.wrongFeedback
-      }`}>
-        <div className={styles.feedbackIcon}>
-          {feedback === t("correct") ? '✓' : '✗'}
+      {/* Timer component */}
+      <div className={styles.timerContainer}>
+        <div className={styles.timerLabel}>Time Remaining</div>
+        <div className={styles.timerProgressWrapper}>
+          <div 
+            className={styles.timerProgress} 
+            style={{ width: `${timerPercentage}%` }} 
+          />
         </div>
-        <div className={styles.feedbackText}>{feedback}</div>
-        
-        <button 
-          className={styles.nextButton} 
-          onClick={handleNextQuestion}
-        >
-          {currentQuestionIndex + 1 === quizQuestions.length ? t("seeResults") : t("nextQuestion")}
-          <span className={styles.nextIcon}>→</span>
-        </button>
+        <div className={styles.timerText}>{timeLeft} seconds</div>
       </div>
-    )}
-  </div>
+      
+      <div className={styles.questionCard}>
+        <div className={styles.questionHeader}>
+          Question {currentQuestionIndex + 1}: {currentQuestion.question}
+        </div>
+
+        <div className={styles.chooseText}>Choose the correct answer:</div>
+        
+        <div className={styles.optionsContainer}>
+          {options.map((option, index) => (
+            <button
+              key={index}
+              className={styles.optionButton}
+              onClick={() => handleAnswer(option)}
+              disabled={feedback !== null}
+            >
+              <div className={styles.optionCircle}>
+                {String.fromCharCode(65 + index)}
+              </div>
+              <div className={styles.optionText}>{option}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      
+      {feedback && (
+        <div className={`${styles.feedbackContainer} ${
+          feedback === t("correct") 
+            ? styles.correctFeedback 
+            : styles.wrongFeedback
+        }`}>
+          <div className={styles.feedbackIcon}>
+            {feedback === t("correct") ? '✓' : '✗'}
+          </div>
+          <div className={styles.feedbackText}>{feedback}</div>
+          
+          <button 
+            className={styles.nextButton} 
+            onClick={handleNextQuestion}
+          >
+            {currentQuestionIndex + 1 === quizQuestions.length ? t("seeResults") : t("nextQuestion")}
+            <span className={styles.nextIcon}>→</span>
+          </button>
+        </div>
+      )}
+    </div>
   );
 };
 
