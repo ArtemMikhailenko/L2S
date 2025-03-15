@@ -27,15 +27,16 @@ function Layout() {
     if (tonConnectUI.wallet?.account?.address) {
       setIsConnected(true);
       // Fetch user data using telegramId
-      const telegramId = Number(WebApp?.initDataUnsafe?.user?.id);
+      const telegramId = WebApp?.initDataUnsafe?.user?.id;
       if (telegramId) {
         fetch(`${import.meta.env.VITE_API_URL}/api/user/telegram/${telegramId}`)
           .then(res => res.json())
           .then((data: UserData) => {
             setUserData(data);
-            // Check access: allow if current time is before accessUntil
-            const accessUntil = new Date(data.accessUntil);
-            if (new Date() < accessUntil) {
+            const accessUntilDate = new Date(data.accessUntil);
+            const now = new Date();
+            console.log("Now:", now, "AccessUntil:", accessUntilDate);
+            if (new Date() < accessUntilDate) {
               setAccessAllowed(true);
             } else {
               setAccessAllowed(false);
