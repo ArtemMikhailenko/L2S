@@ -28,7 +28,7 @@ function Layout() {
       setIsConnected(true);
       // Fetch user data using telegramId
      
-      if (tonConnectUI) {
+      if (telegramId) {
         fetch(`${import.meta.env.VITE_API_URL}/api/user/telegram/${telegramId}`)
           .then(res => res.json())
           .then((data: UserData) => {
@@ -54,7 +54,7 @@ function Layout() {
     });
     
     return () => unsubscribe();
-  }, [tonConnectUI]);
+  }, [tonConnectUI,telegramId]);
 
   return (
     <div className={styles.layout}>
@@ -71,6 +71,9 @@ function Layout() {
             <span className={styles.navLinkDisabled}>{t('profile')}</span>
           </>
         )}
+        <div style={{ position: 'fixed', bottom: 0, right: 0, background: '#fff', padding: '0.5rem', zIndex: 9999 }}>
+  Telegram ID: {WebApp.initDataUnsafe?.user?.id || 'нет данных'}
+</div>
          <LanguageSwitcher />
       </nav>
       <main className={styles.main}>
