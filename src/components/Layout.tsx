@@ -18,7 +18,7 @@ function Layout() {
   const [tonConnectUI] = useTonConnectUI();
   //@ts-ignore
   const [isConnected, setIsConnected] = useState(false);
-  //@ts-ignore
+    //@ts-ignore
   const [userData, setUserData] = useState<UserData | null>(null);
   const [accessAllowed, setAccessAllowed] = useState(false);
   const { t } = useTranslation();
@@ -68,9 +68,6 @@ function Layout() {
           <>
             <span className={styles.navLinkDisabled}>{t('quiz')}</span>
             <span className={styles.navLinkDisabled}>{t('profile')}</span>
-            <span className={styles.subscriptionNotice}>
-              {t("accessExpired", "Access expired. Please pay 0.05 TON to continue.")}
-            </span>
           </>
         )}
          <LanguageSwitcher />

@@ -9,56 +9,57 @@ import { useTranslation } from "react-i18next";
 function TonConnectPage() {
   const [tonConnectUI] = useTonConnectUI();
   const [isConnected, setIsConnected] = useState(false);
+  const [accessUntil, setAccessUntil] = useState(null); // время доступа
   const location = useLocation();
   const [referrerCode, setReferrerCode] = useState(null);
   const [animateElements, setAnimateElements] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
-    // Extract referral code from various possible sources
+    // Извлечение реферального кода из возможных источников
     const extractReferralCode = () => {
       console.log("Extracting referral code...");
       console.log("WebApp data:", WebApp.initDataUnsafe);
-      
+
       const params = new URLSearchParams(location.search);
       const refFromUrl = params.get("ref");
-      
+
       const startParam = WebApp.initDataUnsafe?.start_param;
-      
+
       const initData = WebApp.initData;
-        let initDataObj = {};
-        try {
+      let initDataObj = {};
+      try {
         if (initData) {
-            const paramPairs = initData.split('&');
-            paramPairs.forEach(pair => {
+          const paramPairs = initData.split('&');
+          paramPairs.forEach(pair => {
             const [key, value] = pair.split('=');
             if (key && value) {
-                //@ts-ignore
-                initDataObj[key] = decodeURIComponent(value);
+              //@ts-ignore
+              initDataObj[key] = decodeURIComponent(value);
             }
-            });
+          });
         }
-        } catch (e) {
+      } catch (e) {
         console.error("Error parsing initData:", e);
-        }
-      
+      }
+
       console.log("URL ref parameter:", refFromUrl);
       console.log("start_param:", startParam);
       console.log("initData parsed:", initDataObj);
-      
+
       if (refFromUrl) {
         console.log("Using ref from URL:", refFromUrl);
         return refFromUrl;
       } else if (startParam) {
         console.log("Using start_param:", startParam);
         return startParam;
-      } 
+      }
       console.log("No referral code found");
       return null;
     };
-    
+
     const code = extractReferralCode();
-    if (code as any) {
+    if (code) {
       setReferrerCode(code as any);
     }
 
@@ -69,14 +70,14 @@ function TonConnectPage() {
 
   useEffect(() => {
     console.log("TonConnect UI initialized", tonConnectUI);
-    
-    // If wallet is already connected on mount
+
+    // Если кошелек уже подключен при загрузке
     if (tonConnectUI.wallet) {
       console.log("Wallet detected on mount:", tonConnectUI.wallet);
       handleAfterConnect();
     }
 
-    // Subscribe to wallet status changes
+    // Подписка на изменения статуса кошелька
     const unsubscribe = tonConnectUI.onStatusChange(wallet => {
       console.log("Wallet status changed:", wallet);
       if (wallet) {
@@ -87,7 +88,7 @@ function TonConnectPage() {
     });
 
     return () => unsubscribe();
-  }, [tonConnectUI, referrerCode]); // Added referrerCode to dependencies
+  }, [tonConnectUI, referrerCode]);
 
   const handleAfterConnect = async () => {
     const walletAddress = tonConnectUI.wallet?.account.address;
@@ -121,13 +122,85 @@ function TonConnectPage() {
       const data = await response.json();
       console.log("Server response:", data);
       setIsConnected(true);
+
+      // Сохраняем время доступа, если сервер его вернул
+      if (data.user && data.user.accessUntil) {
+        setAccessUntil(data.user.accessUntil);
+      }
     } catch (error) {
       console.error("Auth error:", error);
     }
   };
 
+  // Функция продления доступа (обращается к серверному эндпоинту)
+  const extendAccess = async () => {
+    const walletAddress = tonConnectUI.wallet?.account.address;
+    if (!walletAddress) {
+      console.error("Wallet address is missing.");
+      return;
+    }
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/payment/extend-access`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ walletAddress }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server error: ${response.status} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      console.log('Access extended:', data.accessUntil);
+      setAccessUntil(data.accessUntil);
+    } catch (error) {
+      console.error('Error extending access:', error);
+    }
+  };
+
+  // Функция для проведения платежа 0.05 TON
+  const handlePayment = async () => {
+    if (!tonConnectUI) {
+      console.error("TonConnect UI not initialized");
+      return;
+    }
+    
+    // Сумма в нанотонах: 0.05 TON = 50,000,000 нанотон
+    const amount = "50000000";
+    // Адрес, на который отправляем платёж
+    const receiver = "UQAXd3nFwaf-bdh10cvEOp5XSk41HF50kyvBPo5M509z3Z1E";
+  
+    try {
+      // Используем tonConnectUI.sendTransaction вместо wallet.sendTransaction
+      const result = await tonConnectUI.sendTransaction({
+        validUntil: Math.floor(Date.now() / 1000) + 360, // Valid for 5 minutes
+        messages: [
+          {
+            address: receiver,
+            amount,
+            payload: "", // можно оставить пустым или добавить payload если нужно
+          },
+        ],
+      });
+      
+      console.log("Результат транзакции:", result);
+      
+      // Если транзакция прошла успешно, вызываем метод продления доступа
+      await extendAccess();
+    } catch (err) {
+      console.error("Ошибка при проведении транзакции:", err);
+    }
+  };
+
+  // Проверка, истёк ли доступ
+  const isAccessExpired = () => {
+    if (!accessUntil) return false;
+    return new Date(accessUntil) < new Date();
+  };
+
   return (
-<div className={styles.pageContainer}>
+    <div className={styles.pageContainer}>
       {/* Background decorative elements */}
       <div className={styles.bgElements}>
         <div className={styles.bgCircle}></div>
@@ -189,6 +262,23 @@ function TonConnectPage() {
               <div className={styles.successMessage}>
                 <div className={styles.checkmarkIcon}></div>
                 <div className={styles.messageText}>{t("walletConnected")}</div>
+              </div>
+            )}
+
+            {/* Статус доступа и кнопка оплаты */}
+            {isConnected && (
+              <div style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #ccc" }}>
+                {isAccessExpired() ? (
+                  <>
+                    <p>Время доступа истекло. Для продления требуется оплата 0.05 TON.</p>
+                    <button onClick={handlePayment}>Оплатить и продлить подписку</button>
+                  </>
+                ) : (
+                  <p>
+                    Доступ активен до:{" "}
+                    {new Date(accessUntil as any).toLocaleString()}
+                  </p>
+                )}
               </div>
             )}
           </div>
