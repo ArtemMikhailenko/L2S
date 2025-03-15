@@ -35,7 +35,9 @@ function Layout() {
             setUserData(data);
             const accessUntilDate = new Date(data.accessUntil);
             const now = new Date();
-            console.log("Now:", now, "AccessUntil:", accessUntilDate);
+            const isAllowed = now < accessUntilDate;
+            console.log("Now:", now, "AccessUntil:", accessUntilDate, "Access allowed:", isAllowed);
+            setAccessAllowed(isAllowed);
             if (new Date() < accessUntilDate) {
               setAccessAllowed(true);
             } else {
@@ -71,9 +73,7 @@ function Layout() {
             <span className={styles.navLinkDisabled}>{t('profile')}</span>
           </>
         )}
-        <div>
-  Telegram ID: {WebApp.initDataUnsafe?.user?.id || 'нет данных'}
-</div>
+        
          <LanguageSwitcher />
       </nav>
       <main className={styles.main}>
