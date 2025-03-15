@@ -24,7 +24,7 @@ function Layout() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (tonConnectUI.wallet?.account?.address) {
+    if (tonConnectUI) {
       setIsConnected(true);
       // Fetch user data using telegramId
       const telegramId = WebApp?.initDataUnsafe?.user?.id;
