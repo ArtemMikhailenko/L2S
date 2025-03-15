@@ -328,35 +328,45 @@
   }
   .subscriptionStatus {
     margin-top: 1rem;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid rgba(128, 26, 61, 0.3);
+    border-radius: 10px;
+    background: linear-gradient(135deg, #fff, #fefefe);
     text-align: center;
     font-family: 'Roboto', sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+  }
+  
+  .subscriptionStatus:hover {
+    transform: translateY(-3px);
   }
   
   .subscriptionText {
-    font-size: 14px;
+    font-size: 15px;
     color: #333;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
   }
   
   .extendButton {
     background-color: #801a3d;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     color: #fff;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
-    padding: 10px 16px;
+    padding: 12px 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 8px rgba(128, 26, 61, 0.2);
   }
   
   .extendButton:hover {
     background-color: #9c2149;
+    transform: scale(1.02);
   }
+  
   
   .walletIcon {
     width: 16px;
