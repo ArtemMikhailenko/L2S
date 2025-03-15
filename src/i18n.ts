@@ -53,7 +53,25 @@ const resources = {
       subscriptionExpired: "Access expired. To extend your subscription, please pay 0.05 TON.",
       extendSubscription: "Pay and Extend Subscription",
       accessActiveUntil: "Access active until:",
-      allTimeLeaderboard: "All-Time Leaderboard"
+      allTimeLeaderboard: "All-Time Leaderboard",
+      todaysPoints: "Today's Points",
+      chooseAnswer: "Choose the correct answer:",
+      quizResults: "Quiz Results",
+      time: "Time:",
+      correctLabel: "Correct:",
+      incorrectLabel: "Incorrect:",
+      rewardsEarned: "Rewards Earned",
+      sendingTokens: "Sending tokens...",
+      failedToSendTokens: "Failed to send tokens",
+      tokens: "tokens",
+      tokensSentSuccess: "sent successfully!",
+      tokensPending: "pending...",
+      playAgain: "Play Again",
+      resultExcellent: "Excellent! You're a crypto expert!",
+      resultGreat: "Great job! Very impressive knowledge!",
+      resultGood: "Good effort! Keep learning!",
+      resultKeepStudying: "Keep studying! There's always room to improve!",
+      questions: "questions"
     }
   },
   ar: {
@@ -106,9 +124,25 @@ const resources = {
       subscriptionExpired: "انتهت صلاحية الوصول. لتمديد اشتراكك، يرجى دفع 0.05 TON.",
       extendSubscription: "ادفع وامدد الاشتراك",
       accessActiveUntil: "الوصول نشط حتى:",
-      allTimeLeaderboard: "لوحة المتصدرين لكل الأوقات"
-
-
+      allTimeLeaderboard: "لوحة المتصدرين لكل الأوقات",
+      todaysPoints: "نقاط اليوم",
+      chooseAnswer: "اختر الإجابة الصحيحة:",
+      quizResults: "نتائج الاختبار",
+      time: "الوقت:",
+      correctLabel: "صحيح:",
+      incorrectLabel: "خطأ:",
+      rewardsEarned: "الجوائز المكتسبة",
+      sendingTokens: "جارٍ إرسال الرموز...",
+      failedToSendTokens: "فشل إرسال الرموز",
+      tokens: "رموز",
+      tokensSentSuccess: "تم الإرسال بنجاح!",
+      tokensPending: "قيد الانتظار...",
+      playAgain: "إعادة اللعب",
+      resultExcellent: "ممتاز! أنت خبير في العملات الرقمية!",
+      resultGreat: "عمل رائع! معلوماتك مثيرة للإعجاب!",
+      resultGood: "جهد جيد! استمر في التعلم!",
+      resultKeepStudying: "استمر في الدراسة! هناك دائمًا مجال للتحسين!",
+      questions: "أسئلة"
     }
   }
 };

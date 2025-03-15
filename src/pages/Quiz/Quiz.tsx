@@ -1,9 +1,12 @@
+// src/components/Quiz/Quiz.tsx
 "use client";
-import { useEffect, useState, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import styles from './Quiz.module.css';
-import WebApp from '@twa-dev/sdk';
-import QuizResult from '../../components/QuizResult/QuizResult';
+
+import { useEffect, useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import styles from "./Quiz.module.css";
+import WebApp from "@twa-dev/sdk";
+import QuizResult from "../../components/QuizResult/QuizResult";
+import i18n from "../../i18n";
 
 interface Question {
   _id: string;
@@ -19,14 +22,17 @@ declare global {
 }
 
 function showRewardedAd() {
-  if (typeof window.show_9078748 === 'function') {
-    return window.show_9078748().then(() => {
-      console.log('User watched the ad');
-    }).catch(err => {
-      console.error('Error showing ad:', err);
-    });
+  if (typeof window.show_9078748 === "function") {
+    return window
+      .show_9078748()
+      .then(() => {
+        console.log("User watched the ad");
+      })
+      .catch((err) => {
+        console.error("Error showing ad:", err);
+      });
   } else {
-    console.warn('show_9078748 is not defined. Check if the script is loaded.');
+    console.warn("show_9078748 is not defined. Check if the script is loaded.");
     return Promise.resolve();
   }
 }
@@ -46,44 +52,46 @@ const Quiz: React.FC = () => {
   const [timerActive, setTimerActive] = useState<boolean>(false);
   const [totalTimeSpent, setTotalTimeSpent] = useState<number>(0);
   const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
-  
+
   // Get current question
   const currentQuestion = quizQuestions[currentQuestionIndex];
+  const currentLang = i18n.language || "en";
 
   const handleAnswer = (selected: string) => {
     if (!currentQuestion || feedback !== null) return;
-    
+
     setSelectedAnswer(selected);
     const isCorrect = selected === currentQuestion.correctAnswer;
     setFeedback(isCorrect ? t("correct") : t("wrong"));
-    
+
     if (isCorrect) {
-      setScore(prev => prev + 1);
-      
+      setScore((prev) => prev + 1);
       // Add 10 points on the server
       const telegramId = WebApp.initDataUnsafe?.user?.id;
       if (telegramId) {
         fetch(`${import.meta.env.VITE_API_URL}/api/user/add-points`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ telegramId, points: 10 }),
         })
-          .then(res => res.json())
-          .then(data => {
-            console.log('Points added:', data);
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("Points added:", data);
           })
-          .catch(err => console.error('Error adding points:', err));
+          .catch((err) => console.error("Error adding points:", err));
       }
     }
-    
+
     setTimerActive(false);
   };
-  
+
   // Fetch questions from backend
   const fetchQuestions = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/quiz/questions?limit=100`);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/quiz/questions?limit=100&lang=${currentLang}`
+      );
       if (!response.ok) {
         throw new Error(t("errorFetchingQuestions"));
       }
@@ -91,12 +99,12 @@ const Quiz: React.FC = () => {
       // Assuming the response object has a "questions" array
       const questionsArray = data.questions;
       setAllQuestions(questionsArray);
-  
+
       // Select 15 random questions
       const shuffled = [...questionsArray].sort(() => 0.5 - Math.random());
       const selected = shuffled.slice(0, 15);
       setQuizQuestions(selected);
-  
+
       setTimerActive(true);
       setLoading(false);
     } catch (err: any) {
@@ -107,7 +115,7 @@ const Quiz: React.FC = () => {
 
   useEffect(() => {
     fetchQuestions();
-  }, []);
+  }, [currentLang]);
 
   useEffect(() => {
     if (currentQuestionIndex !== 0 && (currentQuestionIndex + 1) % 5 === 0 && !quizCompleted) {
@@ -117,16 +125,16 @@ const Quiz: React.FC = () => {
 
   useEffect(() => {
     let timer: number | undefined;
-    
+
     if (timerActive && timeLeft > 0) {
       timer = window.setInterval(() => {
-        setTimeLeft(prevTime => prevTime - 1);
-        setTotalTimeSpent(prevTotal => prevTotal + 1);
+        setTimeLeft((prevTime) => prevTime - 1);
+        setTotalTimeSpent((prevTotal) => prevTotal + 1);
       }, 1000);
     } else if (timeLeft === 0 && currentQuestion) {
       handleTimeUp();
     }
-    
+
     return () => {
       if (timer) clearInterval(timer);
     };
@@ -147,25 +155,25 @@ const Quiz: React.FC = () => {
     setSelectedAnswer(null);
     setTimeLeft(30);
     setTotalTimeSpent(0);
-    
+
     // Get new questions
     const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, 15);
     setQuizQuestions(selected);
-    
+
     setTimerActive(true);
   };
 
   const handleNextQuestion = () => {
     const nextIndex = currentQuestionIndex + 1;
-    
+
     // Check if quiz is completed
     if (nextIndex >= quizQuestions.length) {
       setQuizCompleted(true);
       setTimerActive(false);
       return;
     }
-    
+
     // Move to next question
     setCurrentQuestionIndex(nextIndex);
     setFeedback(null);
@@ -183,7 +191,7 @@ const Quiz: React.FC = () => {
   // Calculate timer percentage for the progress bar
   const timerPercentage = (timeLeft / 30) * 100;
 
-  // Show loading state
+  // Loading state
   if (loading) {
     return (
       <div className={styles.loaderContainer}>
@@ -192,20 +200,22 @@ const Quiz: React.FC = () => {
       </div>
     );
   }
-  
-  // Show error state
+
+  // Error state
   if (error) {
     return (
       <div className={styles.errorContainer}>
         <div className={styles.errorIcon}>❌</div>
         <h3>{t("errorSomethingWentWrong")}</h3>
         <p className={styles.error}>{error}</p>
-        <button className={styles.retryButton} onClick={fetchQuestions}>{t("tryAgain")}</button>
+        <button className={styles.retryButton} onClick={fetchQuestions}>
+          {t("tryAgain")}
+        </button>
       </div>
     );
   }
-  
-  // Show empty state
+
+  // Empty state
   if (quizQuestions.length === 0) {
     return (
       <div className={styles.errorContainer}>
@@ -216,10 +226,10 @@ const Quiz: React.FC = () => {
     );
   }
 
-  // Show quiz result when completed
+  // Quiz result state
   if (quizCompleted) {
     return (
-      <QuizResult 
+      <QuizResult
         score={score}
         totalQuestions={quizQuestions.length}
         timeSpent={totalTimeSpent}
@@ -238,49 +248,51 @@ const Quiz: React.FC = () => {
           {new Date().toLocaleDateString()}
         </div>
         <div className={styles.userTime}>
-          {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
         </div>
       </div>
 
       <div className={styles.summaryCard}>
         <div className={styles.stats}>
           <div className={styles.statItem}>
-            <div className={styles.statLabel}>{score} Correct Answers</div>
-            <div className={styles.statLabel}>{currentQuestionIndex - score} Incorrect Answers</div>
+            <div className={styles.statLabel}>
+              {score} {t("correct")} {/* e.g. "5 Correct!" */}
+            </div>
+            <div className={styles.statLabel}>
+              {currentQuestionIndex - score} {t("wrong")}
+            </div>
           </div>
-          
+
           <div className={styles.progressCircle}>
             <div className={styles.progressText}>
               {currentQuestionIndex + 1}/{quizQuestions.length}
             </div>
           </div>
-          
+
           <div className={styles.pointsContainer}>
-            <div className={styles.pointsLabel}>Today's Points</div>
-            <div className={styles.pointsValue}>{score * 10}.0 points</div>
+          <div className={styles.pointsLabel}>{t("todaysPoints")}</div>
+          <div className={styles.pointsValue}>{score * 10}.0 {t("points")}</div>
           </div>
         </div>
       </div>
 
-      {/* Timer component */}
+      {/* Timer */}
       <div className={styles.timerContainer}>
-        <div className={styles.timerLabel}>Time Remaining</div>
+        <div className={styles.timerLabel}>{t("timeLeft")}</div>
         <div className={styles.timerProgressWrapper}>
-          <div 
-            className={styles.timerProgress} 
-            style={{ width: `${timerPercentage}%` }} 
+          <div
+            className={styles.timerProgress}
+            style={{ width: `${timerPercentage}%` }}
           />
         </div>
-        <div className={styles.timerText}>{timeLeft} seconds</div>
+        <div className={styles.timerText}>{timeLeft} {t("seconds")}</div>
       </div>
-      
+
       <div className={styles.questionCard}>
         <div className={styles.questionHeader}>
-          Question {currentQuestionIndex + 1}: {currentQuestion.question}
+          {t("question")} {currentQuestionIndex + 1}: {currentQuestion.question}
         </div>
-
-        <div className={styles.chooseText}>Choose the correct answer:</div>
-        
+        <div className={styles.chooseText}>{t("chooseAnswer", "Choose the correct answer:")}</div>
         <div className={styles.optionsContainer}>
           {options.map((option, index) => (
             <button
@@ -297,23 +309,21 @@ const Quiz: React.FC = () => {
           ))}
         </div>
       </div>
-      
+
       {feedback && (
-        <div className={`${styles.feedbackContainer} ${
-          feedback === t("correct") 
-            ? styles.correctFeedback 
-            : styles.wrongFeedback
-        }`}>
+        <div
+          className={`${styles.feedbackContainer} ${
+            feedback === t("correct") ? styles.correctFeedback : styles.wrongFeedback
+          }`}
+        >
           <div className={styles.feedbackIcon}>
-            {feedback === t("correct") ? '✓' : '✗'}
+            {feedback === t("correct") ? "✓" : "✗"}
           </div>
           <div className={styles.feedbackText}>{feedback}</div>
-          
-          <button 
-            className={styles.nextButton} 
-            onClick={handleNextQuestion}
-          >
-            {currentQuestionIndex + 1 === quizQuestions.length ? t("seeResults") : t("nextQuestion")}
+          <button className={styles.nextButton} onClick={handleNextQuestion}>
+            {currentQuestionIndex + 1 === quizQuestions.length
+              ? t("seeResults")
+              : t("nextQuestion")}
             <span className={styles.nextIcon}>→</span>
           </button>
         </div>

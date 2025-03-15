@@ -1,7 +1,9 @@
+"use client";
 import { useEffect, useState } from 'react';
 import styles from './QuizResult.module.css';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import WebApp from '@twa-dev/sdk';
+import { useTranslation } from 'react-i18next';
 
 interface QuizResultProps {
   score: number;
@@ -16,6 +18,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
   timeSpent,
   onPlayAgain 
 }) => {
+  const { t } = useTranslation();
   const [tonConnectUI] = useTonConnectUI();
   const [isTokenSent, setIsTokenSent] = useState(false);
   const [tokenAmount, setTokenAmount] = useState(0);
@@ -41,7 +44,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
         const telegramId = WebApp.initDataUnsafe?.user?.id;
         
         if (!walletAddress && !telegramId) {
-          throw new Error('No wallet address or Telegram ID available');
+          throw new Error(t("noWalletOrTelegram", "No wallet address or Telegram ID available"));
         }
         
         // Call API to send tokens
@@ -57,7 +60,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
         
         if (!response.ok) {
           const errorData = await response.json().catch(() => null) || await response.text();
-          throw new Error(`Token transfer failed: ${response.status} - ${JSON.stringify(errorData)}`);
+          throw new Error(`${t("failedToSendTokens", "Token transfer failed")}: ${response.status} - ${JSON.stringify(errorData)}`);
         }
         
         const result = await response.json();
@@ -74,7 +77,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
     if (tokenAmount > 0 && !isTokenSent) {
       sendTokensToUser();
     }
-  }, [tokenAmount, tonConnectUI.wallet?.account.address, isTokenSent]);
+  }, [tokenAmount, tonConnectUI.wallet?.account.address, isTokenSent, t]);
 
   // Calculate percentage score
   const percentage = Math.round((score / totalQuestions) * 100);
@@ -86,19 +89,19 @@ const QuizResult: React.FC<QuizResultProps> = ({
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   };
   
-  // Get message based on score percentage
+  // Get message based on score percentage using translation keys
   const getMessage = (): string => {
-    if (percentage >= 90) return "Excellent! You're a crypto expert!";
-    if (percentage >= 70) return "Great job! Very impressive knowledge!";
-    if (percentage >= 50) return "Good effort! Keep learning!";
-    return "Keep studying! There's always room to improve!";
+    if (percentage >= 90) return t("resultExcellent", "Excellent! You're a crypto expert!");
+    if (percentage >= 70) return t("resultGreat", "Great job! Very impressive knowledge!");
+    if (percentage >= 50) return t("resultGood", "Good effort! Keep learning!");
+    return t("resultKeepStudying", "Keep studying! There's always room to improve!");
   };
 
   return (
     <div className={styles.resultContainer}>
       <div className={styles.resultTicket}>
         <div className={styles.ticketHeader}>
-          <h2 className={styles.ticketTitle}>Quiz Results</h2>
+          <h2 className={styles.ticketTitle}>{t("quizResults", "Quiz Results")}</h2>
           <div className={styles.ticketDecoration}></div>
         </div>
         
@@ -112,35 +115,35 @@ const QuizResult: React.FC<QuizResultProps> = ({
         
         <div className={styles.statsSection}>
           <div className={styles.statItem}>
-            <span className={styles.statLabel}>Time:</span>
+            <span className={styles.statLabel}>{t("time", "Time:")}</span>
             <span className={styles.statValue}>{formatTime(timeSpent)}</span>
           </div>
           <div className={styles.statItem}>
-            <span className={styles.statLabel}>Correct:</span>
-            <span className={styles.statValue}>{score} questions</span>
+            <span className={styles.statLabel}>{t("correctLabel", "Correct:")}</span>
+            <span className={styles.statValue}>{score} {t("questions", "questions")}</span>
           </div>
           <div className={styles.statItem}>
-            <span className={styles.statLabel}>Incorrect:</span>
-            <span className={styles.statValue}>{totalQuestions - score} questions</span>
+            <span className={styles.statLabel}>{t("incorrectLabel", "Incorrect:")}</span>
+            <span className={styles.statValue}>{totalQuestions - score} {t("questions", "questions")}</span>
           </div>
         </div>
         
         <div className={styles.rewardSection}>
-          <div className={styles.rewardTitle}>🎁 Rewards Earned</div>
+          <div className={styles.rewardTitle}>🎁 {t("rewardsEarned", "Rewards Earned")}</div>
           <div className={styles.rewardValue}>
             {loading ? (
-              <div className={styles.rewardLoading}>Sending tokens...</div>
+              <div className={styles.rewardLoading}>{t("sendingTokens", "Sending tokens...")}</div>
             ) : error ? (
               <div className={styles.rewardError}>
-                Failed to send tokens: {error}
+                {t("failedToSendTokens", "Failed to send tokens")}: {error}
               </div>
             ) : isTokenSent ? (
               <div className={styles.rewardSuccess}>
-                {tokenAmount} tokens sent successfully!
+                {tokenAmount} {t("tokens", "tokens")} {t("tokensSentSuccess", "sent successfully!")}
               </div>
             ) : (
               <div className={styles.rewardPending}>
-                {tokenAmount} tokens pending...
+                {tokenAmount} {t("tokens", "tokens")} {t("tokensPending", "pending...")}
               </div>
             )}
           </div>
@@ -154,7 +157,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
           className={styles.playAgainButton} 
           onClick={onPlayAgain}
         >
-          Play Again
+          {t("playAgain", "Play Again")}
         </button>
       </div>
     </div>
