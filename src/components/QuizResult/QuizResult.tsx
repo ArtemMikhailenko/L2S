@@ -10,13 +10,17 @@ interface QuizResultProps {
   totalQuestions: number;
   timeSpent: number;
   onPlayAgain: () => void;
+  incorrectAnswerTokens:any,
+  correctAnswerTokens:any
 }
 
 const QuizResult: React.FC<QuizResultProps> = ({ 
   score, 
   totalQuestions, 
   timeSpent,
-  onPlayAgain 
+  onPlayAgain,
+  correctAnswerTokens,
+  incorrectAnswerTokens 
 }) => {
   const { t } = useTranslation();
   const [tonConnectUI] = useTonConnectUI();
@@ -29,7 +33,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
   useEffect(() => {
     const correctAnswers = score;
     const incorrectAnswers = totalQuestions - score;
-    const tokensEarned = (correctAnswers * 5) + (incorrectAnswers * 1);
+    const tokensEarned = (correctAnswers * correctAnswerTokens) + (incorrectAnswers * incorrectAnswerTokens);
     setTokenAmount(tokensEarned);
   }, [score, totalQuestions]);
 

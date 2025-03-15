@@ -14,7 +14,11 @@ interface Question {
   correctAnswer: string;
   wrongAnswers: string[];
 }
-
+interface RewardSettings {
+  correctAnswerTokens: number;
+  incorrectAnswerTokens: number;
+  correctAnswerPoints:number;
+}
 declare global {
   interface Window {
     show_9078748?: (arg?: any) => Promise<void>;
@@ -52,11 +56,29 @@ const Quiz: React.FC = () => {
   const [timerActive, setTimerActive] = useState<boolean>(false);
   const [totalTimeSpent, setTotalTimeSpent] = useState<number>(0);
   const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
+  const [rewardSettings, setRewardSettings] = useState<RewardSettings | null>(null);
 
   // Get current question
   const currentQuestion = quizQuestions[currentQuestionIndex];
   const currentLang = i18n.language || "en";
+  useEffect(() => {
+    const fetchRewardSettings = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/reward-settings`
+        );
+        if (!res.ok) {
+          throw new Error(t("failedToFetchSettings", "Failed to fetch reward settings"));
+        }
+        const data = await res.json();
+        setRewardSettings(data);
+      } catch (err: any) {
+        console.error("Error fetching reward settings:", err);
+      }
+    };
 
+    fetchRewardSettings();
+  }, []);
   const handleAnswer = (selected: string) => {
     if (!currentQuestion || feedback !== null) return;
 
@@ -72,7 +94,7 @@ const Quiz: React.FC = () => {
         fetch(`${import.meta.env.VITE_API_URL}/api/user/add-points`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ telegramId, points: 10 }),
+          body: JSON.stringify({ telegramId, points:  rewardSettings?.correctAnswerPoints}),
         })
           .then((res) => res.json())
           .then((data) => {
@@ -234,6 +256,8 @@ const Quiz: React.FC = () => {
         totalQuestions={quizQuestions.length}
         timeSpent={totalTimeSpent}
         onPlayAgain={resetQuiz}
+        correctAnswerTokens={rewardSettings?.correctAnswerTokens}
+        incorrectAnswerTokens={rewardSettings?.incorrectAnswerTokens}
       />
     );
   }

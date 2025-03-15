@@ -5,18 +5,37 @@ import { useLocation } from "react-router-dom";
 import styles from "./TonConnect.module.css";
 import WebApp from "@twa-dev/sdk";
 import { useTranslation } from "react-i18next";
-
+interface ConfigSettings {
+  extensionDuration: number;
+  paymentReceiver: string;
+  paymentAmount: number;
+  freeTrialDuration: number;
+}
 function TonConnectPage() {
   const [tonConnectUI] = useTonConnectUI();
   const [isConnected, setIsConnected] = useState(false);
-  const [accessUntil, setAccessUntil] = useState(null); // время доступа
+  const [accessUntil, setAccessUntil] = useState(null);
   const location = useLocation();
+  const [config, setConfig] = useState<ConfigSettings | null>(null);
   const [referrerCode, setReferrerCode] = useState(null);
   const [animateElements, setAnimateElements] = useState(false);
   const { t } = useTranslation();
-
   useEffect(() => {
-    // Извлечение реферального кода из возможных источников
+    const fetchConfig = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/config/settings`);
+        if (!res.ok) {
+          throw new Error("Failed to fetch config settings");
+        }
+        const data = await res.json();
+        setConfig(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchConfig();
+  }, []);
+  useEffect(() => {
     const extractReferralCode = () => {
       console.log("Extracting referral code...");
       console.log("WebApp data:", WebApp.initDataUnsafe);
@@ -71,13 +90,11 @@ function TonConnectPage() {
   useEffect(() => {
     console.log("TonConnect UI initialized", tonConnectUI);
 
-    // Если кошелек уже подключен при загрузке
     if (tonConnectUI.wallet) {
       console.log("Wallet detected on mount:", tonConnectUI.wallet);
       handleAfterConnect();
     }
 
-    // Подписка на изменения статуса кошелька
     const unsubscribe = tonConnectUI.onStatusChange(wallet => {
       console.log("Wallet status changed:", wallet);
       if (wallet) {
@@ -122,8 +139,6 @@ function TonConnectPage() {
       const data = await response.json();
       console.log("Server response:", data);
       setIsConnected(true);
-
-      // Сохраняем время доступа, если сервер его вернул
       if (data.user && data.user.accessUntil) {
         setAccessUntil(data.user.accessUntil);
       }
@@ -131,8 +146,6 @@ function TonConnectPage() {
       console.error("Auth error:", error);
     }
   };
-
-  // Функция продления доступа (обращается к серверному эндпоинту)
   const extendAccess = async () => {
     const telegramId = WebApp.initDataUnsafe?.user?.id;
     if (!telegramId) {
@@ -158,35 +171,32 @@ function TonConnectPage() {
       console.error('Error extending access:', error);
     }
   };
-
-  // Функция для проведения платежа 0.05 TON
   const handlePayment = async () => {
     if (!tonConnectUI) {
       console.error("TonConnect UI not initialized");
       return;
     }
-    
-    // Сумма в нанотонах: 0.05 TON = 50,000,000 нанотон
-    const amount = "50000000";
-    // Адрес, на который отправляем платёж
-    const receiver = "UQAXd3nFwaf-bdh10cvEOp5XSk41HF50kyvBPo5M509z3Z1E";
+    if (!config) {
+      console.error("Config settings not loaded");
+      return;
+    }
+    const amount = String(config.paymentAmount);
+    const receiver = config.paymentReceiver;
   
     try {
-      // Используем tonConnectUI.sendTransaction вместо wallet.sendTransaction
       const result = await tonConnectUI.sendTransaction({
         validUntil: Math.floor(Date.now() / 1000) + 360, // Valid for 5 minutes
         messages: [
           {
             address: receiver,
             amount,
-            payload: "", // можно оставить пустым или добавить payload если нужно
+            payload: "", 
           },
         ],
       });
       
       console.log("Результат транзакции:", result);
       
-      // Если транзакция прошла успешно, вызываем метод продления доступа
       await extendAccess();
     } catch (err) {
       console.error("Ошибка при проведении транзакции:", err);
@@ -265,7 +275,6 @@ function TonConnectPage() {
               </div>
             )}
 
-            {/* Статус доступа и кнопка оплаты */}
             {isConnected && (
               <div style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #ccc" }}>
                {isAccessExpired() ? (
