@@ -22,12 +22,12 @@ function Layout() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [accessAllowed, setAccessAllowed] = useState(false);
   const { t } = useTranslation();
-  const telegramId = WebApp?.initDataUnsafe?.user?.id;
+
   useEffect(() => {
     if (tonConnectUI.wallet?.account?.address) {
       setIsConnected(true);
       // Fetch user data using telegramId
-     
+      const telegramId = WebApp?.initDataUnsafe?.user?.id;
       if (telegramId) {
         fetch(`${import.meta.env.VITE_API_URL}/api/user/telegram/${telegramId}`)
           .then(res => res.json())
@@ -35,9 +35,7 @@ function Layout() {
             setUserData(data);
             const accessUntilDate = new Date(data.accessUntil);
             const now = new Date();
-            const isAllowed = now < accessUntilDate;
-            console.log("Now:", now, "AccessUntil:", accessUntilDate, "Access allowed:", isAllowed);
-            setAccessAllowed(isAllowed);
+            console.log("Now:", now, "AccessUntil:", accessUntilDate);
             if (new Date() < accessUntilDate) {
               setAccessAllowed(true);
             } else {
@@ -48,7 +46,7 @@ function Layout() {
       }
     } else {
       setIsConnected(false);
-      setAccessAllowed(false);
+      // setAccessAllowed(false);
     }
     
     const unsubscribe = tonConnectUI.onStatusChange(wallet => {
@@ -56,7 +54,7 @@ function Layout() {
     });
     
     return () => unsubscribe();
-  }, [tonConnectUI,telegramId]);
+  }, [tonConnectUI]);
 
   return (
     <div className={styles.layout}>
@@ -73,7 +71,6 @@ function Layout() {
             <span className={styles.navLinkDisabled}>{t('profile')}</span>
           </>
         )}
-        
          <LanguageSwitcher />
       </nav>
       <main className={styles.main}>
