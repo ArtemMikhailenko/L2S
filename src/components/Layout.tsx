@@ -71,7 +71,7 @@ function Layout() {
             <span className={styles.navLinkDisabled}>{t('profile')}</span>
           </>
         )}
-        <div style={{ position: 'fixed', bottom: 0, right: 0, background: '#fff', padding: '0.5rem', zIndex: 9999 }}>
+        <div>
   Telegram ID: {WebApp.initDataUnsafe?.user?.id || 'нет данных'}
 </div>
          <LanguageSwitcher />
